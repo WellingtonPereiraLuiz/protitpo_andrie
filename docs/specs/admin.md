@@ -1,6 +1,6 @@
 # Spec — Painel do fotógrafo (`/admin`)
 
-**Estado: APROVADA com revisões — 29/09/2026.** Versão 2.
+**Estado: APROVADA com revisões e IMPLEMENTADA — 29/09/2026.** Versão 2. As 9 fatias da seção 8 estão no Git (`539e04b` a `a5f3c16`).
 
 - Autor: Claude (engenheiro do projeto). Aprovação: Wellington.
 - Insumo: `docs/conteudo/textos-painel.md` (painel do protótipo e os 10 defeitos verificados)
