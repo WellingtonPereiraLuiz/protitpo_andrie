@@ -57,3 +57,21 @@ test('a biblioteca de fotos aberta e o formulário de um dia da agenda também',
   await expect(page.getByRole('button', { name: 'Liberar este dia' })).toBeVisible();
   expect(await violacoesGraves(page)).toEqual([]);
 });
+
+test('um dia focado pelo teclado não fica escondido atrás da barra de salvar', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-09-29T12:00:00'));
+  await entrarNoPainel(page);
+  await page.goto('/admin/agenda');
+  await page.getByRole('button', { name: 'Próximo mês →' }).click();
+  const dia = page.getByRole('button', { name: /^sábado, 28 de novembro de 2026/ });
+  await dia.focus();
+  await expect(dia).toBeFocused();
+  const { fimDoFoco, topoDaBarra } = await page.evaluate(() => {
+    const barra = document.querySelector('[role="status"]')?.parentElement;
+    return {
+      fimDoFoco: document.activeElement?.getBoundingClientRect().bottom ?? 0,
+      topoDaBarra: barra?.getBoundingClientRect().top ?? 0,
+    };
+  });
+  expect(fimDoFoco).toBeLessThanOrEqual(topoDaBarra);
+});

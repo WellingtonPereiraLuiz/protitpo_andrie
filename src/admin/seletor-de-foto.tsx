@@ -6,7 +6,7 @@ import { MEDIA } from '@/content/media';
 import { useConteudo } from '@/dados/conteudo-do-site';
 import { cx } from '@/lib/cx';
 import estilos from './admin.module.css';
-import { CampoTexto } from './campos';
+import { CampoTexto, Seta } from './campos';
 import { converterParaWebp, problemaDoArquivo, TIPOS_ACEITOS } from './envio-de-foto';
 import { usePainel } from './painel';
 import seletor from './seletor-de-foto.module.css';
@@ -286,7 +286,7 @@ export function GaleriaDeFotos({
                     mover(i, i - 1);
                   }}
                 >
-                  ↑
+                  <Seta para="cima" />
                 </button>
                 <button
                   type="button"
@@ -297,7 +297,7 @@ export function GaleriaDeFotos({
                     mover(i, i + 1);
                   }}
                 >
-                  ↓
+                  <Seta para="baixo" />
                 </button>
                 <button
                   type="button"

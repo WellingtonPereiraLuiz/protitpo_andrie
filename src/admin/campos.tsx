@@ -1,6 +1,6 @@
 'use client';
 
-import { useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { cx } from '@/lib/cx';
 import estilos from './admin.module.css';
 import type { Status } from './painel';
@@ -257,7 +257,7 @@ export function ListaDeTextos({
                   mover(i, i - 1);
                 }}
               >
-                ↑
+                <Seta para="cima" />
               </button>
               <button
                 type="button"
@@ -268,7 +268,7 @@ export function ListaDeTextos({
                   mover(i, i + 1);
                 }}
               >
-                ↓
+                <Seta para="baixo" />
               </button>
               <button
                 type="button"
@@ -321,8 +321,27 @@ export function BarraDeSalvar({
   readonly aoDescartar: () => void;
   readonly extra?: React.ReactNode;
 }) {
+  const barra = useRef<HTMLDivElement>(null);
+
+  // A barra fica colada no pé da tela. Um controle focado pelo teclado que caia atrás dela
+  // é rolado para cima dela (WCAG 2.2, 2.4.11). O navegador não faz isso sozinho quando o
+  // controle já está parcialmente visível.
+  useEffect(() => {
+    const aoFocar = (e: FocusEvent) => {
+      const alvo = e.target;
+      const elemento = barra.current;
+      if (!(alvo instanceof HTMLElement) || !elemento || elemento.contains(alvo)) return;
+      const escondido = alvo.getBoundingClientRect().bottom - elemento.getBoundingClientRect().top;
+      if (escondido > 0) window.scrollBy({ top: escondido + 12 });
+    };
+    document.addEventListener('focusin', aoFocar);
+    return () => {
+      document.removeEventListener('focusin', aoFocar);
+    };
+  }, []);
+
   return (
-    <div className={estilos.barra}>
+    <div className={estilos.barra} ref={barra}>
       <span
         role="status"
         className={cx(
@@ -380,5 +399,27 @@ export function RestaurarOriginal({
     >
       Restaurar o original
     </button>
+  );
+}
+
+/** Seta para cima/baixo em SVG: o caractere ↑ vira emoji colorido em algumas fontes. */
+export function Seta({ para }: { readonly para: 'cima' | 'baixo' }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      aria-hidden="true"
+      style={para === 'baixo' ? { transform: 'rotate(180deg)' } : undefined}
+    >
+      <path
+        d="M7 12V2M2.5 6.5 7 2l4.5 4.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

@@ -20,6 +20,7 @@ import {
   CampoTexto,
   ListaDeTextos,
   RestaurarOriginal,
+  Seta,
 } from '../campos';
 import { usePainel, useRascunho } from '../painel';
 import { GaleriaDeFotos, Miniatura, SeletorDeFoto } from '../seletor-de-foto';
@@ -94,7 +95,7 @@ export function ListaDeAlbuns() {
                   );
                 }}
               >
-                ↑
+                <Seta para="cima" />
               </button>
               <button
                 type="button"
@@ -108,7 +109,7 @@ export function ListaDeAlbuns() {
                   );
                 }}
               >
-                ↓
+                <Seta para="baixo" />
               </button>
               <button
                 type="button"

@@ -2,6 +2,7 @@
 
 import { mover } from '@/dados/operacoes';
 import estilos from './admin.module.css';
+import { Seta } from './campos';
 
 /**
  * Edita uma lista de itens dentro de um formulário: cada item vira um grupo com os próprios
@@ -44,7 +45,7 @@ export function ItensEditaveis<T>({
                   aoMudar(mover(itens, i, i - 1));
                 }}
               >
-                ↑ Subir
+                <Seta para="cima" /> Subir
               </button>
               <button
                 type="button"
@@ -55,7 +56,7 @@ export function ItensEditaveis<T>({
                   aoMudar(mover(itens, i, i + 1));
                 }}
               >
-                ↓ Descer
+                <Seta para="baixo" /> Descer
               </button>
               <button
                 type="button"
