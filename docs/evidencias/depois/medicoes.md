@@ -49,3 +49,20 @@ Sem modal de abertura — o site aparece direto.
 
 As capturas de página inteira foram tiradas depois de rolar a página até o fim (para as
 imagens `lazy` carregarem) e voltar ao topo.
+
+## Depois do painel (Etapa 3, critério 13 da spec do admin)
+
+Mesma máquina, mesmo script, build de produção na revisão `eee2ce1` (site público lendo o
+conteúdo salvo + painel completo). Limite da spec: no máximo +10% sobre o "depois" acima.
+
+| Cenário                                 | Depois (Etapa 2) | Com o painel                           | Variação |
+| --------------------------------------- | ---------------- | -------------------------------------- | -------- |
+| localhost, sem throttle                 | 132 ms           | 118, 121, 129, 133, 269 → **129 ms**   | −2%      |
+| 10 Mbps / 40 ms RTT / CPU 4x mais lenta | 905 ms           | 783, 793, 870, 884, 896 → **870 ms**   | −4%      |
+
+Registro do caminho: na fatia 2, com os repositórios (e o Zod) importados direto em toda
+página, a mediana foi a **145 ms / 989 ms** (+9,8% / +9,3%, no limite). Passar a importá-los
+sob demanda, depois do carregamento, trouxe de volta a **130 ms / 904 ms**.
+
+Uma execução de 269 ms no cenário sem throttle destoa das outras quatro; a mediana não é
+afetada por ela, e ela não se repetiu nas medições anteriores.
