@@ -2,13 +2,13 @@
 
 ## Dados de contato (reais)
 
-| Campo | Valor |
-|---|---|
-| WhatsApp | +55 69 9951-6147 |
-| E-mail | ahgestao@gmail.com |
-| Instagram | @andreiheck |
-| Facebook | /andreiheckfoto |
-| Praça | Alto Paraíso, Rondônia |
+| Campo     | Valor                  |
+| --------- | ---------------------- |
+| WhatsApp  | +55 69 9951-6147       |
+| E-mail    | ahgestao@gmail.com     |
+| Instagram | @andreiheck            |
+| Facebook  | /andreiheckfoto        |
+| Praça     | Alto Paraíso, Rondônia |
 
 No protótipo o telefone aparece em dois formatos: `+55 69 9951-6147` (menu e rodapé) e
 `(69) 9951-6147` (chamada da home). Padronizar na migração.
@@ -35,19 +35,23 @@ Fundo clicável para fechar (`aria-label="Fechar menu"`), lista de links, e no p
 ## Rodapé
 
 **Coluna 1**
+
 - Andrei Heck
 - Casamentos, ensaios e vídeo em Alto Paraíso e região — Rondônia.
 
 **Coluna 2 — Navegar** (só no desktop)
+
 - Os mesmos sete itens do menu
 
 **Coluna 3 — Redes e contato**
+
 - Instagram @andreiheck
 - Facebook /andreiheckfoto
 - ahgestao@gmail.com
 - WhatsApp · +55 69 9951-6147
 
 **Base**
+
 - © 2026 Andrei Heck Fotografia
 - Site desenvolvido pela TRIRREME
 

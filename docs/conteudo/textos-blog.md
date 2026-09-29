@@ -7,11 +7,11 @@
 
 Cada cartão: imagem, `{data} · {categoria}`, título, resumo (só desktop) e **Ler o post**.
 
-| Data | Categoria | Título | Resumo |
-|---|---|---|---|
+| Data        | Categoria  | Título                                                  | Resumo                                                                |
+| ----------- | ---------- | ------------------------------------------------------- | --------------------------------------------------------------------- |
 | 12 mar 2026 | Casamentos | Casamento no sítio da família: a luz das cinco da tarde | Por que eu sempre peço quinze minutos com o casal antes do sol sumir. |
-| 27 fev 2026 | Dicas | Como escolher o horário da cerimônia | Um guia curto para não acabar com as fotos sob o sol de meio-dia. |
-| 14 jan 2026 | Ensaios | Ensaio de gestante em casa | A casa de vocês conta mais da história do que qualquer cenário. |
+| 27 fev 2026 | Dicas      | Como escolher o horário da cerimônia                    | Um guia curto para não acabar com as fotos sob o sol de meio-dia.     |
+| 14 jan 2026 | Ensaios    | Ensaio de gestante em casa                              | A casa de vocês conta mais da história do que qualquer cenário.       |
 
 > No protótipo os três cartões abrem **o mesmo** post. Na migração cada um ganha slug
 > próprio; só o primeiro tem corpo escrito (ver pendências abaixo).
@@ -30,17 +30,17 @@ A Marina queria casar no sítio onde passou todas as férias de infância. O Té
 
 Às cinco, o sol baixou atrás das mangueiras e pintou o terreiro inteiro de dourado. Esse é o horário que eu peço, sempre: quinze minutos só dos dois, longe de todo mundo. Nenhuma pose. Só uma caminhada devagar até a porteira e de volta.
 
-*(galeria de 2 fotos no mobile, 3 no desktop)*
+_(galeria de 2 fotos no mobile, 3 no desktop)_
 
 O filme do dia ficou com quatro minutos. Coloquei ele aqui embaixo — repare no silêncio antes da entrada.
 
-*(bloco de vídeo: miniatura com botão ▶ e legenda "Filme · 4 min · exemplo" — é um
-placeholder, não há player nem URL de vídeo no protótipo)*
+_(bloco de vídeo: miniatura com botão ▶ e legenda "Filme · 4 min · exemplo" — é um
+placeholder, não há player nem URL de vídeo no protótipo)_
 
 ### Links do post
 
 - Galeria completa deste casamento → `#`
-- Fornecedores do dia (exemplo fictício) → `#` *(só desktop)*
+- Fornecedores do dia (exemplo fictício) → `#` _(só desktop)_
 
 ### Fecho
 

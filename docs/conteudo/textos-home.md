@@ -5,8 +5,8 @@
 Imagem de fundo com parallax e véu escuro por cima.
 
 - **Kicker:** Fotografia de casamento · Alto Paraíso, RO
-- **H1:** Andrei Heck *(editável pelo painel — `heroTitle`)*
-- **Subtítulo:** O que vocês sentirem naquele dia, eu guardo pra sempre. *(editável pelo painel — `heroSub`)*
+- **H1:** Andrei Heck _(editável pelo painel — `heroTitle`)_
+- **Subtítulo:** O que vocês sentirem naquele dia, eu guardo pra sempre. _(editável pelo painel — `heroSub`)_
 
 ## 2. Apresentação
 
@@ -24,11 +24,11 @@ Imagem de fundo com parallax e véu escuro por cima.
 
 Cartões (2 no mobile, 3 no desktop):
 
-| Nome | Tipo |
-|---|---|
-| Marina & Téo | Casamento |
-| Luana & Rafa | Ensaio |
-| Bia & Caio | Filme do dia |
+| Nome         | Tipo         |
+| ------------ | ------------ |
+| Marina & Téo | Casamento    |
+| Luana & Rafa | Ensaio       |
+| Bia & Caio   | Filme do dia |
 
 ## 4. Depoimentos
 

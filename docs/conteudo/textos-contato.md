@@ -6,24 +6,24 @@
 
 ## Campos
 
-| Campo | Rótulo | Placeholder | Obrigatório |
-|---|---|---|---|
-| `nome` | Nome dos noivos | Marina e Téo | sim |
-| `telefone` | Telefone / WhatsApp | (69) 9xxxx-xxxx | sim |
-| `data` | Data do evento | 18/07/2026 | sim |
-| `tipo` | Tipo de serviço | Casamento, ensaio ou vídeo | sim |
-| `cidade` | Cidade | Alto Paraíso, RO | sim |
-| `mensagem` | Mensagem | Contem um pouco de como imaginam o dia | não |
+| Campo      | Rótulo              | Placeholder                            | Obrigatório |
+| ---------- | ------------------- | -------------------------------------- | ----------- |
+| `nome`     | Nome dos noivos     | Marina e Téo                           | sim         |
+| `telefone` | Telefone / WhatsApp | (69) 9xxxx-xxxx                        | sim         |
+| `data`     | Data do evento      | 18/07/2026                             | sim         |
+| `tipo`     | Tipo de serviço     | Casamento, ensaio ou vídeo             | sim         |
+| `cidade`   | Cidade              | Alto Paraíso, RO                       | sim         |
+| `mensagem` | Mensagem            | Contem um pouco de como imaginam o dia | não         |
 
 ## Mensagens de erro
 
-| Campo | Mensagem |
-|---|---|
-| `nome` | Como podemos chamar vocês? |
+| Campo      | Mensagem                                   |
+| ---------- | ------------------------------------------ |
+| `nome`     | Como podemos chamar vocês?                 |
 | `telefone` | Precisamos do seu telefone para responder. |
-| `data` | Mesmo uma data aproximada ajuda. |
-| `tipo` | Escolha o tipo de serviço. |
-| `cidade` | Em qual cidade será? |
+| `data`     | Mesmo uma data aproximada ajuda.           |
+| `tipo`     | Escolha o tipo de serviço.                 |
+| `cidade`   | Em qual cidade será?                       |
 
 Resumo no topo quando há erros:
 **Faltou preencher alguns campos obrigatórios. Sem eles não consigo montar a mensagem do WhatsApp.**

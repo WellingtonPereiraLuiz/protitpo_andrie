@@ -25,6 +25,7 @@ O botão **Entrar** não lê os campos: chama `this.go("painel")` direto.
 - **Abas:** Textos · Álbuns · Fotos · Posts · Agenda (padrão: Textos)
 
 ### Aba Textos
+
 - Campo **Título da home** → `heroTitle`
 - Campo **Frase de abertura** → `heroSub`
 - Botão **Ver na home**
@@ -34,11 +35,13 @@ Ambos os campos gravam em `localStorage` a cada tecla (`persist`). Não há bot�
 porque não há momento de salvar.
 
 ### Aba Álbuns
+
 - **Aviso:** O texto de cada álbum aparece entre a foto principal e a galeria. Pode ser uma linha ou uma história inteira.
 - Um `textarea` por álbum (6 no total), com nome, `{categoria} · {total} fotos` e botão **Ver álbum**
 - Grava em `localStorage` sob `albumTexts[id]`
 
 ### Aba Fotos
+
 - **Aviso:** Arraste uma foto para substituir. Nesta demonstração, a troca vale só neste navegador.
 - Grade de 4 fotos no mobile, 6 no desktop, rotuladas: Capa da home · Destaque 1 · Destaque 2 · Destaque 3 · Ensaios · Foto do Sobre
 - Cada uma tem o texto **Trocar**
@@ -47,16 +50,17 @@ porque não há momento de salvar.
 `<span>`, não um botão. O aviso promete arrastar; a tela não aceita.
 
 ### Aba Posts
+
 - Linha de resumo: `3 posts publicados · 1 rascunho`
 - Botão **Escrever novo post**
 - Lista:
 
-  | Título | Estado |
-  |---|---|
-  | Casamento no sítio da família | Publicado · 12 mar 2026 |
+  | Título                               | Estado                  |
+  | ------------------------------------ | ----------------------- |
+  | Casamento no sítio da família        | Publicado · 12 mar 2026 |
   | Como escolher o horário da cerimônia | Publicado · 27 fev 2026 |
-  | Ensaio de gestante em casa | Publicado · 14 jan 2026 |
-  | Checklist para o dia anterior | Rascunho |
+  | Ensaio de gestante em casa           | Publicado · 14 jan 2026 |
+  | Checklist para o dia anterior        | Rascunho                |
 
 - Cada linha tem **Editar** e **Excluir**
 
@@ -66,6 +70,7 @@ repare que o quarto item ("Checklist para o dia anterior") não existe em lugar 
 site público.
 
 ### Aba Agenda
+
 - **Aviso:** Toque em um dia para alternar entre **livre** e **ocupado**. Isso muda o calendário público desta demonstração.
 - Grade de Novembro 2026, cada dia é um botão que alterna o estado
 - Botão **Ver agenda pública**
@@ -77,7 +82,12 @@ Esta é a **única aba totalmente funcional**. Persiste em `localStorage` sob `o
 Chave única `ah-demo` no `localStorage`, gravando:
 
 ```json
-{ "heroTitle": "...", "heroSub": "...", "ocupados": [7,14,21], "albumTexts": { "marina-teo": "..." } }
+{
+  "heroTitle": "...",
+  "heroSub": "...",
+  "ocupados": [7, 14, 21],
+  "albumTexts": { "marina-teo": "..." }
+}
 ```
 
 Lida uma vez em `componentDidMount` via `setState(JSON.parse(raw))` — **sem validação

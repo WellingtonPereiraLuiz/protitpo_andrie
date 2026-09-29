@@ -13,7 +13,7 @@ Hoje fotografo casamentos em Rondônia inteira. Continuo procurando os cantos.
 
 ## Jeito de trabalhar
 
-*(2 cartões no mobile, 3 no desktop)*
+_(2 cartões no mobile, 3 no desktop)_
 
 **Discreto**
 Não interrompo, não dirijo a cena. Se vocês esquecerem que estou ali, o trabalho está certo.

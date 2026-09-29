@@ -16,7 +16,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
 - **Voltar:** ← Voltar ao portfólio
 - `{meta}` como kicker, `{nome}` como H1
 - Foto de capa, clicável (abre o lightbox na posição 0)
-- `{texto}` do álbum *(editável pelo painel)*
+- `{texto}` do álbum _(editável pelo painel)_
 - Grade de fotos em colunas (2 no mobile, 3 no desktop), cada uma abre o lightbox
 - Pé: `{total} fotos neste álbum` + botão **Quero um dia assim** → `/contato`
 
@@ -29,6 +29,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
 ## Os seis álbuns
 
 ### 1. Marina & Téo — `marina-teo`
+
 - **Categoria:** Casamentos
 - **Meta:** Casamento · Alto Paraíso
 - **Resumo:** Casamento no sítio da família, com a luz das cinco da tarde.
@@ -40,6 +41,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
   Chegamos às três da tarde, quando a cozinha ainda cheirava a bolo e ninguém estava pronto. Às cinco, o sol baixou atrás das mangueiras e pintou o terreiro inteiro de dourado. A festa foi até o galo cantar.
 
 ### 2. Bia & Caio — `bia-caio`
+
 - **Categoria:** Casamentos
 - **Meta:** Casamento · Ji-Paraná
 - **Resumo:** Cerimônia na igreja e festa no salão da cidade.
@@ -47,6 +49,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
 - **Texto:** Uma linha só, pra testar texto curto.
 
 ### 3. Júlia & Vitor — `julia-vitor`
+
 - **Categoria:** Casamentos
 - **Meta:** Casamento · Ouro Preto do Oeste
 - **Resumo:** Casamento pequeno, no quintal, com trinta convidados.
@@ -54,6 +57,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
 - **Texto:** Trinta convidados, uma mesa comprida e muita conversa. Foi o casamento mais silencioso que já fotografei — e um dos mais bonitos.
 
 ### 4. Luana & Rafa — `luana-rafa`
+
 - **Categoria:** Ensaios
 - **Meta:** Ensaio pré-wedding · Cachoeira
 - **Resumo:** Fim de tarde na cachoeira, uma semana antes do casamento.
@@ -61,6 +65,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
 - **Texto:** Pedi que eles só caminhassem. O resto foi deles.
 
 ### 5. Esperando a Alice — `alice`
+
 - **Categoria:** Ensaios
 - **Meta:** Ensaio gestante · Em casa
 - **Resumo:** Ensaio em casa, no quarto que já estava pronto pra ela.
@@ -68,6 +73,7 @@ Cada cartão mostra: miniatura, `{meta}`, `{nome}`, `{resumo}` (só desktop) e
 - **Texto:** A casa conta mais do que qualquer cenário. Fotografamos no quarto da Alice, que ainda não tinha chegado.
 
 ### 6. Filme · Marina & Téo — `filme-mt`
+
 - **Categoria:** Vídeos
 - **Meta:** Filme do dia · 4 min
 - **Resumo:** Quadros do filme de casamento.

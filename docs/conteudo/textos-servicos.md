@@ -7,7 +7,8 @@
 
 Acompanho desde o making of até a pista vazia. Fotos em cor e preto e branco, entregues em galeria online.
 
-*(a lista abaixo só aparece no desktop)*
+_(a lista abaixo só aparece no desktop)_
+
 - Cobertura de 8 a 12 horas
 - Galeria online com download em alta
 - Prévia em até 7 dias
