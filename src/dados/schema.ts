@@ -120,6 +120,8 @@ export const depoimentoSchema = z.object({
   id: slugSchema,
   autor: texto(LIMITES.campoCurto, 'O autor'),
   texto: texto(LIMITES.resumo * 2, 'O depoimento'),
+  /** Depoimento inventado para a demonstração: o site mostra "exemplo fictício". */
+  exemplo: z.boolean(),
 });
 
 export const servicoSchema = z.object({

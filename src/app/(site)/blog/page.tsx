@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
-import { POSTS } from '@/content/posts';
-import { dataCurta } from '@/lib/calendario';
-import estilos from './blog.module.css';
+import { ListaDePosts } from './lista-de-posts';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -19,28 +15,7 @@ export default function BlogPage() {
         <h1 className={ui.titulo}>Histórias e conselhos</h1>
       </header>
 
-      <div className={estilos.lista}>
-        {POSTS.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`} className={estilos.cartao}>
-            <div className={estilos.moldura}>
-              <Foto
-                id={post.capa}
-                alt={`Imagem do post “${post.titulo}”`}
-                preencher
-                sizes="(min-width: 880px) 40vw, 100vw"
-              />
-            </div>
-            <div>
-              <span className={estilos.meta}>
-                {dataCurta(post.data)} · {post.categoria}
-              </span>
-              <span className={estilos.titulo}>{post.titulo}</span>
-              <p className={estilos.resumo}>{post.resumo}</p>
-              <span className={estilos.ler}>Ler o post</span>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <ListaDePosts />
     </div>
   );
 }

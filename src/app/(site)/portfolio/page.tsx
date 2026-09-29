@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
-import { ALBUNS, CATEGORIAS, type Categoria } from '@/content/albuns';
+import { CATEGORIAS_DE_ALBUM, type CategoriaDeAlbum } from '@/dados/schema';
+import { GradeDeAlbuns } from './grade-de-albuns';
 import estilos from './portfolio.module.css';
 import { cx } from '@/lib/cx';
 
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   description: 'Casamentos, ensaios e filmes fotografados por Andrei Heck.',
 };
 
-function ehCategoria(valor: string | undefined): valor is Categoria {
-  return valor !== undefined && (CATEGORIAS as readonly string[]).includes(valor);
+function ehCategoria(valor: string | undefined): valor is CategoriaDeAlbum {
+  return valor !== undefined && (CATEGORIAS_DE_ALBUM as readonly string[]).includes(valor);
 }
 
 export default async function PortfolioPage({
@@ -23,8 +23,7 @@ export default async function PortfolioPage({
   const params = await searchParams;
   const bruto = params.categoria;
   const pedida = Array.isArray(bruto) ? bruto[0] : bruto;
-  const ativa: Categoria = ehCategoria(pedida) ? pedida : 'Casamentos';
-  const visiveis = ALBUNS.filter((a) => a.categoria === ativa);
+  const ativa: CategoriaDeAlbum = ehCategoria(pedida) ? pedida : 'Casamentos';
 
   return (
     <div className={ui.container}>
@@ -34,7 +33,7 @@ export default async function PortfolioPage({
       </header>
 
       <nav className={estilos.filtros} aria-label="Filtrar por categoria">
-        {CATEGORIAS.map((c) => (
+        {CATEGORIAS_DE_ALBUM.map((c) => (
           <Link
             key={c}
             href={
@@ -48,26 +47,7 @@ export default async function PortfolioPage({
         ))}
       </nav>
 
-      <div className={estilos.grade}>
-        {visiveis.map((album) => (
-          <Link key={album.slug} href={`/portfolio/${album.slug}`} className={estilos.cartao}>
-            <div className={estilos.moldura}>
-              <Foto
-                id={album.capa}
-                alt={`Capa do álbum ${album.nome}`}
-                preencher
-                sizes="(min-width: 880px) 33vw, (min-width: 620px) 50vw, 100vw"
-              />
-            </div>
-            <div className={estilos.info}>
-              <span className={estilos.meta}>{album.meta}</span>
-              <span className={estilos.nome}>{album.nome}</span>
-              <span className={estilos.resumo}>{album.resumo}</span>
-              <span className={estilos.total}>Ver as {album.fotos.length + 1} fotos</span>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <GradeDeAlbuns ativa={ativa} />
     </div>
   );
 }

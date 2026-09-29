@@ -3,12 +3,14 @@ import { describe, expect, it } from 'vitest';
 import AgendaPage from '@/app/(site)/agenda/page';
 import BlogPage from '@/app/(site)/blog/page';
 import PostPage, {
+  generateMetadata as generateMetadataDePost,
   generateStaticParams as generateStaticParamsDePost,
 } from '@/app/(site)/blog/[slug]/page';
 import ContatoPage from '@/app/(site)/contato/page';
 import HomePage from '@/app/(site)/page';
 import PortfolioPage from '@/app/(site)/portfolio/page';
 import AlbumPage, {
+  generateMetadata as generateMetadataDeAlbum,
   generateStaticParams as generateStaticParamsDeAlbum,
 } from '@/app/(site)/portfolio/[slug]/page';
 import ServicosPage from '@/app/(site)/servicos/page';
@@ -128,11 +130,46 @@ describe('404', () => {
     expect(screen.getByRole('link', { name: 'Ir para a home' })).toHaveAttribute('href', '/');
   });
 
-  it('um álbum inexistente dispara notFound', async () => {
-    await expect(AlbumPage({ params: Promise.resolve({ slug: 'nao-existe' }) })).rejects.toThrow();
+  // Álbuns e posts criados no painel só existem no navegador de quem os criou, então o
+  // endereço desconhecido é aceito e resolvido lá (spec do admin, seção 9). Quando não
+  // existe em lugar nenhum: tela de "não encontrado" com caminho de volta, e fora do índice.
+  it('um álbum inexistente mostra "não encontrado", volta ao portfólio e não é indexado', async () => {
+    const params = Promise.resolve({ slug: 'nao-existe' });
+    render(await AlbumPage({ params }));
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Não encontrei esse álbum' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Voltar' })).toHaveAttribute('href', '/portfolio');
+    expect((await generateMetadataDeAlbum({ params })).robots).toEqual({
+      index: false,
+      follow: false,
+    });
   });
 
-  it('um post inexistente dispara notFound', async () => {
-    await expect(PostPage({ params: Promise.resolve({ slug: 'nao-existe' }) })).rejects.toThrow();
+  it('um post inexistente mostra "não encontrado", volta ao blog e não é indexado', async () => {
+    const params = Promise.resolve({ slug: 'nao-existe' });
+    render(await PostPage({ params }));
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Não encontrei esse post' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Voltar' })).toHaveAttribute('href', '/blog');
+    expect((await generateMetadataDePost({ params })).robots).toEqual({
+      index: false,
+      follow: false,
+    });
+  });
+
+  it('álbum e post que existem continuam indexáveis', async () => {
+    const album = await generateMetadataDeAlbum({
+      params: Promise.resolve({ slug: 'marina-teo' }),
+    });
+    expect(album).toEqual({
+      title: 'Marina & Téo',
+      description: 'Casamento no sítio da família, com a luz das cinco da tarde.',
+    });
+    const post = await generateMetadataDePost({
+      params: Promise.resolve({ slug: 'como-escolher-o-horario-da-cerimonia' }),
+    });
+    expect(post.robots).toBeUndefined();
   });
 });

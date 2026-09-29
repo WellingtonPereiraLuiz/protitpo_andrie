@@ -28,7 +28,12 @@ export const SEMENTE: ConteudoDoSite = {
     blocos: p.blocos.map((b) => (b.tipo === 'galeria' ? { ...b, fotos: [...b.fotos] } : { ...b })),
     links: p.links.map((l) => ({ ...l })),
   })),
-  depoimentos: DEPOIMENTOS.map((d) => ({ id: gerarSlug(d.autor), autor: d.autor, texto: d.texto })),
+  depoimentos: DEPOIMENTOS.map((d) => ({
+    id: gerarSlug(d.autor),
+    autor: d.autor,
+    texto: d.texto,
+    exemplo: true,
+  })),
   servicos: SERVICOS.map((s) => ({ ...s, itens: [...s.itens] })),
   agenda: {
     compromissos: COMPROMISSOS_DE_EXEMPLO.map((c) => ({

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
-import { AVISOS_COMERCIAIS, SERVICOS } from '@/content/servicos';
+import { AVISOS_COMERCIAIS } from '@/content/servicos';
+import { ListaDeServicos } from './lista-de-servicos';
 import estilos from './servicos.module.css';
 
 export const metadata: Metadata = {
@@ -18,27 +18,7 @@ export default function ServicosPage() {
         <h1 className={ui.titulo}>Três jeitos de guardar o que vocês viverem</h1>
       </header>
 
-      {SERVICOS.map((s) => (
-        <article key={s.slug} className={estilos.servico}>
-          <div className={estilos.moldura}>
-            <Foto
-              id={s.foto}
-              alt={`Imagem que ilustra o serviço de ${s.titulo.toLowerCase()}`}
-              preencher
-              sizes="(min-width: 880px) 40vw, 100vw"
-            />
-          </div>
-          <div className={estilos.corpo}>
-            <h2>{s.titulo}</h2>
-            <p>{s.texto}</p>
-            <ul className={estilos.itens}>
-              {s.itens.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </article>
-      ))}
+      <ListaDeServicos />
 
       <div className={estilos.avisos}>
         {AVISOS_COMERCIAIS.map((aviso) => (

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
 import { JEITOS, SOBRE } from '@/content/sobre';
+import { RetratoDoSobre } from './retrato';
 import estilos from './sobre.module.css';
 
 export const metadata: Metadata = {
@@ -14,15 +15,7 @@ export default function SobrePage() {
   return (
     <div className={ui.container}>
       <div className={estilos.topo}>
-        <div className={estilos.retrato}>
-          <Foto
-            id={SOBRE.retrato}
-            alt="Retrato do fotógrafo"
-            preencher
-            priority
-            sizes="(min-width: 880px) 34vw, 100vw"
-          />
-        </div>
+        <RetratoDoSobre />
         <div>
           <span className={ui.kicker}>{SOBRE.kicker}</span>
           <h1 className={ui.titulo}>{SOBRE.titulo}</h1>

@@ -1,25 +1,17 @@
 import Link from 'next/link';
 import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
-import { APRESENTACAO, CHAMADA_FINAL, DEPOIMENTOS, DESTAQUES, HERO } from '@/content/home';
+import { APRESENTACAO, CHAMADA_FINAL } from '@/content/home';
 import { CONTATO } from '@/content/site';
 import { linkDoWhatsApp } from '@/lib/whatsapp';
+import { DepoimentosDaHome, DestaquesDaHome, HeroDaHome } from './home-dinamica';
 import estilos from './home.module.css';
 import { cx } from '@/lib/cx';
 
 export default function HomePage() {
   return (
     <>
-      <section className={estilos.hero}>
-        <Foto id={HERO.foto} alt="Imagem de abertura do site" preencher priority sizes="100vw" />
-        <div className={estilos.heroVeu} />
-        <div className={estilos.heroTexto}>
-          <span className={estilos.heroKicker}>{HERO.kicker}</span>
-          <h1 className={estilos.heroTitulo}>{HERO.titulo}</h1>
-          <div className={estilos.heroRisco} />
-          <p className={estilos.heroSub}>{HERO.subtitulo}</p>
-        </div>
-      </section>
+      <HeroDaHome />
 
       <section className={ui.secao}>
         <div className={cx(ui.container, estilos.apresentacao)}>
@@ -52,38 +44,14 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className={estilos.grade}>
-            {DESTAQUES.map((d) => (
-              <Link key={d.nome} href={`/portfolio/${d.slug}`} className={estilos.cartao}>
-                <div className={estilos.moldura}>
-                  <Foto
-                    id={d.foto}
-                    alt={`Capa do álbum ${d.nome}`}
-                    preencher
-                    sizes="(min-width: 880px) 33vw, 50vw"
-                  />
-                </div>
-                <div className={estilos.legenda}>
-                  <span className={estilos.legendaNome}>{d.nome}</span>
-                  <span className={estilos.legendaTipo}>{d.tipo}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <DestaquesDaHome />
         </div>
       </section>
 
       <section className={cx(ui.secao, estilos.depoimentos)}>
         <div className={ui.container}>
           <span className={ui.kicker}>Casais que confiaram</span>
-          <div className={estilos.depoimentosGrade}>
-            {DEPOIMENTOS.map((d) => (
-              <figure key={d.autor} className={estilos.depoimento}>
-                <p>{d.texto}</p>
-                <figcaption>{d.autor} · exemplo fictício</figcaption>
-              </figure>
-            ))}
-          </div>
+          <DepoimentosDaHome />
         </div>
       </section>
 
