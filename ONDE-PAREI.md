@@ -45,6 +45,11 @@ Entrar em `/admin` com **`admin` / `admin`** (a tela diz isso; o login não prot
 | Serviços    | título, texto, itens, foto; adicionar, reordenar, remover                   |
 | Fotos       | 6 lugares fixos; envio de arquivo convertido para WebP ≤ 1920px             |
 | Agenda      | escolher um dia e atribuir um compromisso; o site mostra só "ocupada"       |
+| Cores       | paletas prontas, 7 cores editáveis, prévia, contraste AA, copiar paleta     |
+
+"Ver o site" abre o site na mesma aba com a faixa "visualizando como administrador" e a
+seta de volta; vale só nesta aba (sessionStorage) e com sessão ativa, então o acesso normal
+nunca a vê.
 
 Salvar/Descartar em todo formulário, estado visível, confirmação ao sair com alterações,
 "Restaurar o original" por seção e "Restaurar tudo" (inclui fotos enviadas).
@@ -84,6 +89,14 @@ O desvio de paleta está registrado em `docs/conteudo/design-tokens.md`. As capt
 `docs/evidencias/depois/` são da Etapa 2 e mostram as cores antigas.
 
 ---
+
+## Site (depois do feedback no Zen, 29/09)
+
+- Menu do celular via portal no `<body>` (o `backdrop-filter` do cabeçalho prendia o menu na
+  caixa dele), com entrada e saída animadas.
+- Transição entre páginas com `<ViewTransition>` (`(site)/template.tsx`); a capa do álbum
+  viaja do cartão para a página. Respeita `prefers-reduced-motion`.
+- Rodapé enxuto: marca, contato e créditos.
 
 ## Riscos aceitos no MVP (spec, seção 9)
 
