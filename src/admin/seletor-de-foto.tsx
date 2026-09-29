@@ -1,11 +1,14 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { FotoDoConteudo } from '@/components/foto-do-conteudo';
 import { MEDIA } from '@/content/media';
 import { useConteudo } from '@/dados/conteudo-do-site';
 import { cx } from '@/lib/cx';
 import estilos from './admin.module.css';
+import { CampoTexto } from './campos';
+import { converterParaWebp, problemaDoArquivo, TIPOS_ACEITOS } from './envio-de-foto';
+import { usePainel } from './painel';
 import seletor from './seletor-de-foto.module.css';
 
 /** Miniatura quadrada de uma foto do conteúdo (biblioteca ou enviada). */
@@ -23,6 +26,137 @@ function useBiblioteca(): string[] {
   return [...Object.keys(fotosEnviadas).reverse(), ...Object.keys(MEDIA)];
 }
 
+/**
+ * Envia uma foto nova: o botão abre o seletor de arquivos do sistema (arrastar é um extra).
+ * A foto é convertida para WebP ≤ 1920px, guardada e entra na biblioteca; quem chamou
+ * recebe o id para usar no lugar escolhido (que ainda precisa de Salvar).
+ */
+function EnviarFoto({ aoEnviar }: { aoEnviar: (id: string) => void }) {
+  const painel = usePainel();
+  const entrada = useRef<HTMLInputElement>(null);
+  const [escolhido, setEscolhido] = useState<{ arquivo: File; previa: string } | null>(null);
+  const [alt, setAlt] = useState('');
+  const [erro, setErro] = useState<string | null>(null);
+  const [enviando, setEnviando] = useState(false);
+
+  const limpar = () => {
+    if (escolhido) URL.revokeObjectURL(escolhido.previa);
+    setEscolhido(null);
+    setAlt('');
+    if (entrada.current) entrada.current.value = '';
+  };
+
+  const receber = (arquivo: File | undefined) => {
+    if (!arquivo) return;
+    const problema = problemaDoArquivo(arquivo);
+    if (problema) {
+      setErro(problema);
+      return;
+    }
+    setErro(null);
+    if (escolhido) URL.revokeObjectURL(escolhido.previa);
+    setEscolhido({ arquivo, previa: URL.createObjectURL(arquivo) });
+  };
+
+  const confirmar = async () => {
+    if (!escolhido) return;
+    if (!alt.trim()) {
+      setErro('Descreva a foto em poucas palavras: é o texto alternativo, obrigatório.');
+      return;
+    }
+    setEnviando(true);
+    try {
+      const foto = await converterParaWebp(escolhido.arquivo);
+      const id = await painel.servicos.fotos.guardar(foto.arquivo);
+      await painel.salvar({
+        ...painel.conteudo,
+        fotosEnviadas: {
+          ...painel.conteudo.fotosEnviadas,
+          [id]: { largura: foto.largura, altura: foto.altura, alt: alt.trim() },
+        },
+      });
+      limpar();
+      setErro(null);
+      aoEnviar(id);
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : 'Não foi possível enviar a foto.');
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  return (
+    <div
+      className={seletor.envio}
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        receber(e.dataTransfer.files[0]);
+      }}
+    >
+      <input
+        ref={entrada}
+        type="file"
+        accept={TIPOS_ACEITOS.join(',')}
+        hidden
+        onChange={(e) => {
+          receber(e.target.files?.[0]);
+        }}
+      />
+      {!escolhido && (
+        <p className={seletor.envioLinha}>
+          <button
+            type="button"
+            className={estilos.botaoSecundario}
+            onClick={() => {
+              entrada.current?.click();
+            }}
+          >
+            Enviar foto nova
+          </button>
+          <span className={estilos.ajuda}>JPEG, PNG ou WebP até 15 MB · ou arraste para cá</span>
+        </p>
+      )}
+      {escolhido && (
+        <div className={seletor.previa}>
+          {/* Pré-visualização local (blob:), antes de qualquer conversão. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={escolhido.previa} alt="Pré-visualização da foto escolhida" />
+          <CampoTexto
+            rotulo="Texto alternativo"
+            obrigatorio
+            ajuda='O que a foto mostra, para quem não enxerga. Ex.: "Noivos na cachoeira".'
+            valor={alt}
+            aoMudar={setAlt}
+          />
+          <div className={estilos.acoes}>
+            <button
+              type="button"
+              className={estilos.botao}
+              disabled={enviando}
+              onClick={() => {
+                void confirmar();
+              }}
+            >
+              {enviando ? 'Preparando a foto…' : 'Usar esta foto'}
+            </button>
+            <button type="button" className={estilos.botaoDiscreto} onClick={limpar}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
+      {erro && (
+        <p className={estilos.mensagemErro} role="alert">
+          {erro}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function Biblioteca({
   id,
   escolhidas,
@@ -36,21 +170,24 @@ function Biblioteca({
 }) {
   const fotos = useBiblioteca();
   return (
-    <div id={id} className={seletor.biblioteca} role="group" aria-label={rotulo}>
-      {fotos.map((foto, i) => (
-        <button
-          key={foto}
-          type="button"
-          className={cx(seletor.opcao, escolhidas.includes(foto) ? seletor.opcaoEscolhida : '')}
-          aria-pressed={escolhidas.includes(foto)}
-          aria-label={`Foto ${String(i + 1)} de ${String(fotos.length)}`}
-          onClick={() => {
-            aoEscolher(foto);
-          }}
-        >
-          <FotoDoConteudo id={foto} alt="" preencher sizes="96px" />
-        </button>
-      ))}
+    <div id={id}>
+      <EnviarFoto aoEnviar={aoEscolher} />
+      <div className={seletor.biblioteca} role="group" aria-label={rotulo}>
+        {fotos.map((foto, i) => (
+          <button
+            key={foto}
+            type="button"
+            className={cx(seletor.opcao, escolhidas.includes(foto) ? seletor.opcaoEscolhida : '')}
+            aria-pressed={escolhidas.includes(foto)}
+            aria-label={`Foto ${String(i + 1)} de ${String(fotos.length)}`}
+            onClick={() => {
+              aoEscolher(foto);
+            }}
+          >
+            <FotoDoConteudo id={foto} alt="" preencher sizes="96px" />
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
