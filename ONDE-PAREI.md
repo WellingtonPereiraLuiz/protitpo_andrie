@@ -1,31 +1,34 @@
-# Onde parei — 29/09/2026, 01:20
+# Onde parei — 29/09/2026, 08:40
 
-Branch: `feat/next-migration`. Nada foi para a `main`.
+Branch: `feat/next-migration`. Nada foi para a `main`. Clone de trabalho:
+`~/Documents/projetos/protitpo_andrie` (Windows; não existe `~/Documentos` nesta máquina).
 
 ---
 
 ## Estado em uma linha
 
-Etapas 0 e 1 concluídas. **Etapa 2 parcial**: o site Next.js está de pé com as 9 rotas
-públicas + 404, e **5 dos 7 gates estão verdes**. Falta escrever e rodar o Playwright, e
-faltam as capturas e a medição do "depois". A Etapa 3 (spec do admin) não começou.
+Etapas 0, 1 e **2 concluídas — 7 de 7 gates verdes**. **Etapa 3**: a spec
+`docs/specs/admin.md` está escrita e **aguarda aprovação**. Nada do admin foi implementado.
 
 ---
 
 ## Gates
 
-| Gate                               | Estado                           |
-| ---------------------------------- | -------------------------------- |
-| Prettier                           | ✅ verde                         |
-| ESLint estrito (com tipos)         | ✅ verde                         |
-| `tsc --noEmit` estrito             | ✅ verde                         |
-| Vitest                             | ✅ verde — 39 testes, 2 arquivos |
-| `next build`                       | ✅ verde — 18 páginas geradas    |
-| **Playwright**                     | ❌ **não escrito, não rodado**   |
-| **Capturas + medição do "depois"** | ❌ **não feitas**                |
+| Gate                           | Estado                                              |
+| ------------------------------ | --------------------------------------------------- |
+| Prettier                       | ✅ verde                                            |
+| ESLint estrito (com tipos)     | ✅ verde — agora também em `e2e/`                   |
+| `tsc --noEmit` estrito         | ✅ verde — app + `tsconfig.e2e.json`                |
+| Vitest                         | ✅ verde — 42 testes, 2 arquivos                    |
+| `next build`                   | ✅ verde — 18 páginas geradas                       |
+| Playwright                     | ✅ verde — 1 teste × 2 viewports (390, 1440)        |
+| Capturas + medição do "depois" | ✅ `docs/evidencias/depois/` — ver `medicoes.md` lá |
 
-`npm run check` encadeia tudo, mas **vai falhar no `test:e2e`** porque ainda não existe
-nenhum teste em `e2e/`. Os outros cinco passam.
+`npm run check` passa inteiro, e passa **duas vezes seguidas** (antes, o `next build`
+reescrevia `next-env.d.ts` e o Prettier quebrava na segunda execução).
+
+Carregamento da home, mediana de 5, mesmo Chromium e mesmo script, nesta máquina:
+**564 → 132 ms** (localhost) e **12.433 → 905 ms** (10 Mbps / 40 ms / CPU 4×).
 
 ---
 
@@ -79,35 +82,17 @@ scripts/media-manifest.mjs  regenera src/content/media.ts a partir de public/med
 
 ## ⚠️ O que precisa de atenção antes de continuar
 
-### 1. O teste da agenda é tautológico — CORRIGIR
+### 1. Spec do admin aguardando aprovação
 
-Fiz um teste de mutação nos 39 testes. Adulterei `ocupados: [7, 14, 21]` para
-`[7, 14, 22]` em `src/content/agenda.ts` e **os 39 continuaram passando**.
+`docs/specs/admin.md`. Tem 10 decisões em aberto (D1–D10); a principal é D1 — onde o
+conteúdo editado fica guardado. **Não implementar nada antes da aprovação.**
 
-O motivo está em `src/__tests__/conteudo.test.ts`:
+### 2. `vite-tsconfig-paths` — trocado, NÃO commitado
 
-```ts
-const ocupados = diasDoMes(mes).filter(...).map(...);
-expect(ocupados).toEqual([...mes.ocupados]);   // compara a fonte com ela mesma
-```
-
-Compara o dado com ele mesmo. Não prova nada sobre a grade. Os três testes do bloco
-`describe('agenda')` têm esse defeito.
-
-A mutação equivalente em `whatsapp.ts` **foi pega** (1 falha em 39), então o resto da
-suíte reage.
-
-**Corrigir com valores literais esperados**, não derivados da fonte. Ex.: afirmar que em
-Novembro de 2026 o dia 7 cai numa célula riscada e o dia 8 não.
-
-### 2. `vite-tsconfig-paths` está obsoleto
-
-O Vitest avisa a cada execução:
-
-> The plugin "vite-tsconfig-paths" is detected. Vite now supports tsconfig paths
-> resolution natively via the resolve.tsconfigPaths option.
-
-Trocar por `resolve: { tsconfigPaths: true }` em `vitest.config.ts` e desinstalar o plugin.
+`vitest.config.ts` usa `resolve: { tsconfigPaths: true }` e o plugin foi desinstalado
+(sai também `tsconfck`, `globrex` e uma cópia aninhada de `typescript@5.9.3`; nenhuma
+versão travada mudou). `npm run check` verde e o aviso sumiu. **Aguarda aprovação para
+commitar**, por ser mudança de dependência.
 
 ### 3. `/portfolio` é rota dinâmica (ƒ), não estática
 
@@ -117,14 +102,30 @@ filtro no cliente. **Decisão em aberto.**
 
 ### 4. O aviso de "isto é demonstração" ficou só no rodapé
 
-Sugeri no relatório da Etapa 1 e apliquei sem aprovação explícita: `AVISO_DEMONSTRACAO`
-em `src/content/site.ts`, renderizado em itálico discreto no rodapé. **Confirmar se é
-esse o tratamento desejado** — o protótipo usava um modal de abertura.
+`AVISO_DEMONSTRACAO` em `src/content/site.ts`, em itálico discreto no rodapé. O protótipo
+usava um modal de abertura. **Decisão em aberto.**
 
 ### 5. Posts sem corpo
 
-Dois dos três posts têm só título, data e resumo. A página deles mostra o resumo e um
-aviso de que o conteúdo entra pelo painel — em vez de inventar texto. **Confirmar.**
+Dois dos três posts mostram o resumo e um aviso de conteúdo em preparo, em vez de texto
+inventado. **Decisão em aberto.**
+
+### 6. Três cartões do blog com slug próprio
+
+**Decisão em aberto.**
+
+### 7. `AGENTS.md` e `CLAUDE.md` gerados pelo `next dev`
+
+O Next 16 cria os dois na raiz a cada `next dev` (desliga com `agentRules: false` no
+`next.config.ts`). Estão fora do Git. **Decidir: commitar, ignorar ou desligar.**
+
+### 8. `/portfolio`: o primeiro cartão é o LCP e está `lazy`
+
+Medido com `PerformanceObserver` no build de produção, em 390 e 1440: o LCP de
+`/portfolio` é a capa do primeiro cartão (`p1011`), com `loading="lazy"` — contraria a regra
+"lazy só fora da primeira dobra". O `next dev` avisa disso no console. Home e álbum estão
+certos (`eager`). Não corrigido; o ajuste é passar `priority` ao primeiro cartão em
+`src/app/(site)/portfolio/page.tsx`.
 
 ---
 
@@ -137,8 +138,11 @@ aviso de que o conteúdo entra pelo painel — em vez de inventar texto. **Confi
 | typescript        | **6.0.3**  | **NÃO 7.0.2.** O `typescript-eslint` só aceita `>=4.8.4 <6.1.0`. Com TS 7 o gate de ESLint com tipos não roda.                                                     |
 | eslint            | **9.39.5** | **NÃO 10.11.0.** O `eslint-config-next@16` embute um `eslint-plugin-react` que usa `context.getFilename()`, removido no ESLint 10 — o lint quebra com `TypeError`. |
 | vitest            | 5.0.2      | estável atual                                                                                                                                                      |
-| @playwright/test  | 1.63.0     | instalado, **ainda não configurado**                                                                                                                               |
+| @playwright/test  | 1.63.0     | configurado em `playwright.config.ts`                                                                                                                              |
 | prettier          | 3.9.9      | estável atual                                                                                                                                                      |
+
+`vite-tsconfig-paths` foi **removido no working tree** (ver atenção 2) — só entra no
+Git com aprovação.
 
 As duas versões em negrito são rebaixamentos deliberados, cada um para manter um gate
 funcionando. Reverter qualquer uma quebra o gate correspondente.
@@ -147,36 +151,34 @@ funcionando. Reverter qualquer uma quebra o gate correspondente.
 
 ## Próximos passos, em ordem
 
-1. **Corrigir os testes da agenda** (item 1 acima). Antes de qualquer coisa.
-2. **Escrever o Playwright**: `playwright.config.ts` + um teste que abre `/`, navega até
-   `/portfolio` e até um álbum, em 390px e em 1440px. O binário do Chromium já está
-   baixado em `~/.cache/ms-playwright/chromium_headless_shell-1243`.
-3. **Rodar `npm run check`** inteiro e deixar os 7 verdes.
-4. **Capturas do "depois"** em 390 e 1440, em `docs/evidencias/depois/`.
-5. **Medir o carregamento** com a MESMA metodologia do "antes" — o script está em
-   `docs/evidencias/antes/medicoes.md`: 5 execuções, cache limpo, dois cenários
-   (localhost sem throttle e 10 Mbps / 40 ms / CPU 4×). Os números do "antes" são
-   **645 ms** e **11.593 ms**.
-6. **Etapa 3**: escrever `docs/specs/admin.md`. O insumo já está pronto em
-   `docs/conteudo/textos-painel.md`, com os 10 defeitos verificados do painel atual.
-   **PARAR ali e esperar aprovação** antes de implementar qualquer coisa do admin.
+1. Aprovar (ou pedir mudanças em) `docs/specs/admin.md` e responder D1–D10.
+2. Aprovar o commit da remoção do `vite-tsconfig-paths`.
+3. Responder as decisões abertas 3 a 8 acima.
+4. Só então: implementar o admin em fatias, na ordem da seção 8 da spec.
 
 ---
 
 ## Como retomar
 
 ```bash
-cd ~/Documentos/projetos/protitpo_andrie
+cd ~/Documents/projetos/protitpo_andrie   # ou ~/Documentos, conforme a máquina
 git checkout feat/next-migration
-npm install
-npm run dev          # http://localhost:3000
+npm ci                                     # não npm install: respeita as versões travadas
+npx playwright install chromium            # o navegador não vem com o repositório
+npm run dev                                # http://localhost:3000
+npm run check                              # os 7 gates
+node scripts/medir-carregamento.mjs http://localhost:3100/   # com `next start -p 3100`
 ```
+
+**Windows:** se o Git estiver com `core.autocrlf=true`, o checkout vem em CRLF e o Prettier
+reprova ~67 arquivos. Neste clone foi resolvido com `git config --local core.autocrlf false`
+e novo checkout. Uma `.gitattributes` com `* text=auto eol=lf` resolveria para todos —
+**não aplicada, aguarda decisão**.
 
 Material de referência que não vai para o Git (está no `.gitignore`):
 
-- `.extracao/` — o protótipo desmontado: `app.js` (código-fonte original, 30 KB),
-  `template.html`, os 68 JPEGs e as 24 fontes originais, a prancha de contato.
-  **Se esta pasta sumir**, dá para recriá-la a partir do `index.html` no commit `a8c2cee`.
+- `.extracao/` — o protótipo desmontado. **Não existe nesta máquina.** Dá para recriá-la a
+  partir do `index.html` no commit `a8c2cee` (`git show a8c2cee:index.html`).
 
 ---
 
@@ -184,6 +186,9 @@ Material de referência que não vai para o Git (está no `.gitignore`):
 
 - Nada foi testado fora do Chromium headless. Firefox e Safari, nunca abertos.
 - Nenhuma verificação de acessibilidade automatizada (axe ou equivalente).
-- O layout desktop foi conferido por captura só no protótipo antigo; **as telas novas
-  nunca foram vistas renderizadas** — só passaram por teste de unidade e build.
+- As telas novas foram vistas renderizadas só em `/`, `/portfolio` e `/portfolio/marina-teo`
+  (capturas em `docs/evidencias/depois/`). As outras rotas passaram só por teste e build.
+- O viewport da medição do "antes" não estava registrado; o "depois" usou o padrão do
+  Playwright (1280×720). O "antes" foi remedido nesta máquina com o mesmo script para a
+  comparação ser justa.
 - Nenhum deploy. Vercel não foi tocada, conforme instruído.
