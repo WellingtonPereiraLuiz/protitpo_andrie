@@ -1,5 +1,5 @@
 import { slugUnico } from '@/lib/slug';
-import type { AlbumDoSite, ConteudoDoSite } from './schema';
+import type { AlbumDoSite, ConteudoDoSite, PostDoSite } from './schema';
 
 /** Operações sobre o documento. Puras: recebem um documento e devolvem outro. */
 
@@ -62,4 +62,37 @@ export function adicionarAlbum(
     'album',
   );
   return { conteudo: { ...c, albuns: [...c.albuns, { slug, ...dados }] }, slug };
+}
+
+export type DadosDePostNovo = Omit<PostDoSite, 'slug'>;
+
+export function postEmBranco(hoje: string): DadosDePostNovo {
+  return {
+    estado: 'rascunho',
+    titulo: '',
+    data: hoje,
+    categoria: '',
+    resumo: '',
+    capa: '',
+    blocos: [{ tipo: 'texto', texto: '' }],
+    links: [],
+  };
+}
+
+/** Acrescenta um post, com endereço gerado do título e que ainda não existe. */
+export function adicionarPost(
+  c: ConteudoDoSite,
+  dados: DadosDePostNovo,
+): { conteudo: ConteudoDoSite; slug: string } {
+  const slug = slugUnico(
+    dados.titulo,
+    c.posts.map((p) => p.slug),
+    'post',
+  );
+  return { conteudo: { ...c, posts: [...c.posts, { slug, ...dados }] }, slug };
+}
+
+export function contarPosts(c: ConteudoDoSite): { publicados: number; rascunhos: number } {
+  const publicados = c.posts.filter((p) => p.estado === 'publicado').length;
+  return { publicados, rascunhos: c.posts.length - publicados };
 }

@@ -17,3 +17,8 @@ export function slugUnico(texto: string, emUso: Iterable<string>, reserva = 'ite
   while (usados.has(`${base}-${String(n)}`)) n++;
   return `${base}-${String(n)}`;
 }
+
+/** Um id novo, curto e válido como slug: "d-3f9a1c2e". */
+export function idNovo(prefixo: string): string {
+  return `${prefixo}-${crypto.randomUUID().slice(0, 8)}`;
+}

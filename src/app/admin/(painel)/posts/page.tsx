@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { SecaoEmConstrucao } from '@/admin/secao-em-construcao';
+import { ListaDePosts } from '@/admin/secoes/posts';
 
 export const metadata: Metadata = { title: 'Posts' };
 
 export default function Pagina() {
-  return <SecaoEmConstrucao titulo="Posts" />;
+  return <ListaDePosts />;
 }

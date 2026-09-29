@@ -5,9 +5,12 @@ import { criarAutenticacaoDemo } from '@/dados/local/autenticacao-demo';
 import { CHAVE_DO_CONTEUDO, criarConteudoLocal } from '@/dados/local/conteudo-local';
 import {
   adicionarAlbum,
+  adicionarPost,
   ALBUM_EM_BRANCO,
+  contarPosts,
   excluirAlbum,
   mover,
+  postEmBranco,
   referenciasDoAlbum,
 } from '@/dados/operacoes';
 import { ErroDeValidacao } from '@/dados/repositorios';
@@ -265,6 +268,32 @@ describe('operações sobre o documento', () => {
     expect(r.ok ? undefined : r.erros.find((e) => e.caminho === 'albuns.6.capa')?.mensagem).toBe(
       'Escolha uma foto.',
     );
+  });
+});
+
+describe('posts', () => {
+  it('post novo começa como rascunho, com a data de hoje e um parágrafo vazio', () => {
+    expect(postEmBranco('2026-09-29')).toMatchObject({
+      estado: 'rascunho',
+      data: '2026-09-29',
+      blocos: [{ tipo: 'texto', texto: '' }],
+    });
+  });
+
+  it('adicionar post gera endereço do título e conta rascunhos à parte', () => {
+    const dados = {
+      ...postEmBranco('2026-09-29'),
+      titulo: 'Checklist da véspera',
+      categoria: 'Dicas',
+      resumo: 'O que deixar pronto no dia anterior.',
+      capa: 'p1039',
+      blocos: [{ tipo: 'texto' as const, texto: 'Separe os documentos.' }],
+    };
+    const { conteudo, slug } = adicionarPost(SEMENTE, dados);
+    expect(slug).toBe('checklist-da-vespera');
+    expect(validarConteudo(conteudo).ok).toBe(true);
+    expect(contarPosts(SEMENTE)).toEqual({ publicados: 3, rascunhos: 0 });
+    expect(contarPosts(conteudo)).toEqual({ publicados: 3, rascunhos: 1 });
   });
 });
 
