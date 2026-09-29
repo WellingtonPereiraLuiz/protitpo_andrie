@@ -85,3 +85,13 @@
     -webkit-box-orient: vertical;
   }
 }
+
+/* Ao abrir pela lista, a tela rola até aqui: margem para a faixa fixa de demonstração. */
+.detalhes {
+  scroll-margin-top: 72px;
+}
+
+.detalhes:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}

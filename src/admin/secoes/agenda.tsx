@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MES_INICIAL_DA_AGENDA, MESES_A_FRENTE } from '@/content/agenda';
 import {
   LIMITES,
@@ -64,10 +64,21 @@ export function SecaoAgenda() {
     });
   };
 
+  // "Abrir" na lista de próximos: o formulário do dia fica acima da lista, então a tela
+  // precisa ir até ele — senão o clique parece não fazer nada.
+  const detalhes = useRef<HTMLFieldSetElement>(null);
+  const [pedidosDeAbrir, setPedidosDeAbrir] = useState(0);
+  useEffect(() => {
+    if (pedidosDeAbrir === 0) return;
+    detalhes.current?.scrollIntoView({ block: 'start' });
+    detalhes.current?.focus({ preventScroll: true });
+  }, [pedidosDeAbrir]);
+
   const abrirDia = (data: string) => {
     setSelecionada(data);
     const i = meses.findIndex((m) => compararMeses(m, mesDaData(data)) === 0);
     if (i >= 0) setIndice(i);
+    setPedidosDeAbrir((n) => n + 1);
   };
 
   const proximos = compromissos.filter((c) => (hoje ? c.data >= hoje : true));
@@ -153,7 +164,12 @@ export function SecaoAgenda() {
       </div>
 
       {selecionada && (
-        <fieldset className={estilos.grupo} id="compromisso">
+        <fieldset
+          ref={detalhes}
+          tabIndex={-1}
+          className={cx(estilos.grupo, agenda.detalhes)}
+          id="compromisso"
+        >
           <legend>{dataPorExtenso(selecionada)}</legend>
           <p className={estilos.ajuda} style={{ margin: 0 }}>
             {noDia ? 'Dia ocupado.' : 'Dia livre. Preencha para marcar como ocupado.'}
@@ -239,6 +255,7 @@ export function SecaoAgenda() {
                     {dataCurta(c.data)} · {c.tipo}
                     {c.local && ` · ${c.local}`}
                   </span>
+                  {c.observacao && <span className={estilos.itemMeta}>{c.observacao}</span>}
                 </div>
                 <div className={estilos.itemAcoes}>
                   <button

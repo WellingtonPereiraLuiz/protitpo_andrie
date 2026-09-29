@@ -95,3 +95,35 @@ test('o site público navega pelos meses até 12 meses à frente', async ({ page
   await expect(page.getByRole('region', { name: 'Setembro de 2027' })).toBeVisible();
   await expect(proximo).toBeDisabled();
 });
+
+test('"Abrir" na lista de próximos leva aos detalhes do compromisso', async ({ page }) => {
+  await entrarNoPainel(page);
+  await page.goto('/admin/agenda');
+  // Primeiro, dá um local e uma observação ao compromisso de 21/11, para ver que aparecem.
+  await page.getByRole('button', { name: 'Próximo mês →' }).click();
+  await page.getByRole('button', { name: /^sábado, 21 de novembro de 2026 — / }).click();
+  await page.getByRole('textbox', { name: 'Local', exact: true }).fill('Cachoeira do Rio');
+  await page
+    .getByRole('textbox', { name: 'Observação', exact: true })
+    .fill('Levar drone. Chegar às 15h.');
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Tudo salvo' })).toBeVisible();
+  await page.getByRole('button', { name: 'Fechar' }).click();
+  await page.getByRole('button', { name: '← Mês anterior' }).click();
+
+  const item = page.getByRole('listitem').filter({ hasText: '21 nov 2026' });
+  await expect(item).toContainText('Cachoeira do Rio');
+  await expect(item).toContainText('Levar drone. Chegar às 15h.');
+  await item.getByRole('button', { name: 'Abrir sábado, 21 de novembro de 2026' }).click();
+
+  const detalhes = page.getByRole('group', { name: 'sábado, 21 de novembro de 2026' });
+  await expect(detalhes).toBeFocused();
+  await expect(detalhes).toBeInViewport();
+  await expect(page.getByRole('heading', { level: 3, name: 'Novembro de 2026' })).toBeVisible();
+  await expect(detalhes.getByRole('textbox', { name: 'Título', exact: true })).toHaveValue(
+    'Ensaio (exemplo)',
+  );
+  await expect(detalhes.getByRole('textbox', { name: 'Local', exact: true })).toHaveValue(
+    'Cachoeira do Rio',
+  );
+});
