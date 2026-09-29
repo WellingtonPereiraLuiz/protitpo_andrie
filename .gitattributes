@@ -1,0 +1,11 @@
+# Texto sempre em LF no checkout, em qualquer sistema: o Prettier exige LF, e sem isto um
+# Windows com core.autocrlf=true reprova ~67 arquivos no format:check.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff2 binary

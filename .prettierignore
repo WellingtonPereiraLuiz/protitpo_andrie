@@ -1,0 +1,9 @@
+.next/
+node_modules/
+.extracao/
+public/media/
+package-lock.json
+test-results/
+playwright-report/
+docs/evidencias/
+next-env.d.ts

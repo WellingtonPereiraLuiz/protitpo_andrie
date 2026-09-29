@@ -1,0 +1,159 @@
+.navegacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mesNome {
+  font-size: 22px;
+  text-align: center;
+  margin: 0;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.semana {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--muted-strong);
+}
+
+.dia {
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pequeno);
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--font-body), Georgia, serif;
+  cursor: pointer;
+  text-align: left;
+  min-width: 0;
+}
+
+.dia:hover {
+  border-color: var(--gold-stroke);
+}
+
+.numero {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rotulo {
+  font-size: 11px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+.diaOcupado {
+  background: var(--ocupado);
+}
+
+.diaEscolhido {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.subtitulo {
+  font-size: 22px;
+  margin: 16px 0 12px;
+}
+
+@media (min-width: 880px) {
+  .dia {
+    min-height: 72px;
+  }
+
+  .rotulo {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+/* Ao abrir pela lista, a tela rola até aqui: margem para a faixa fixa de demonstração. */
+.detalhes {
+  scroll-margin-top: 72px;
+}
+
+.detalhes:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Janela "Abrir" de um compromisso (dialog nativo, modal). */
+.janela {
+  border: 0;
+  border-radius: var(--radius);
+  padding: 0;
+  width: min(92vw, 480px);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 64px rgba(24, 23, 21, 0.35);
+}
+
+.janela[open] {
+  animation: janela-entra 260ms var(--easing);
+}
+
+.janela::backdrop {
+  background: rgba(24, 23, 21, 0.55);
+  animation: janela-fundo 260ms ease-out;
+}
+
+.janelaCorpo {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.janelaTitulo {
+  font-size: 26px;
+  margin: 0;
+}
+
+.janelaDados {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.janelaDados dt {
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.janelaDados dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@keyframes janela-entra {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+@keyframes janela-fundo {
+  from {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,86 @@
+.topo {
+  display: grid;
+  gap: 32px;
+  padding: 48px 0 8px;
+}
+
+.retrato {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.retrato img {
+  object-fit: cover;
+}
+
+.texto {
+  max-width: var(--leitura);
+  color: var(--ink-soft);
+  font-size: 17px;
+}
+
+.jeitos {
+  display: grid;
+  gap: 28px;
+  margin: 56px 0;
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.jeitoTitulo {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 21px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.jeito p {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.faixa {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 48px;
+}
+
+.faixaFoto {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.faixaFoto img {
+  object-fit: cover;
+  filter: sepia(0.18) saturate(0.88) contrast(1.04);
+}
+
+.fecho {
+  padding-bottom: 24px;
+}
+
+@media (min-width: 880px) {
+  .topo {
+    grid-template-columns: 0.75fr 1.25fr;
+    gap: 56px;
+    align-items: center;
+    padding: 80px 0 8px;
+  }
+
+  .jeitos {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 44px;
+  }
+
+  .faixa {
+    gap: 20px;
+  }
+}

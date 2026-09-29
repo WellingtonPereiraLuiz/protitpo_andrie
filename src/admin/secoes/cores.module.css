@@ -1,0 +1,136 @@
+.prontas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pronta {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  min-height: 44px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pronta[aria-pressed='true'] {
+  outline: 3px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.amostras {
+  display: flex;
+}
+
+.amostras span {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.grade {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.cor {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.cor > :last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.seletor {
+  width: 48px;
+  height: 46px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--field);
+  cursor: pointer;
+  flex: none;
+}
+
+.subtitulo {
+  font-size: 22px;
+  margin: 8px 0 12px;
+}
+
+/* A prévia usa as variáveis da paleta em edição, só dentro desta caixa. */
+.previa {
+  background: var(--paper);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.previa a {
+  color: var(--gold);
+}
+
+.previaKicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.previaTitulo {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 26px;
+  color: var(--ink);
+}
+
+.previaTexto {
+  margin: 0;
+}
+
+.previaCartao {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--ink);
+}
+
+.previaBotao {
+  align-self: flex-start;
+  background: var(--gold);
+  color: var(--ink-on-dark);
+  border-radius: var(--radius-pequeno);
+  padding: 10px 18px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.verificacoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+}
+
+.reprovada {
+  color: var(--erro);
+}

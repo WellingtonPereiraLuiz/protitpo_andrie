@@ -1,0 +1,80 @@
+.voltar {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+  text-decoration: none;
+  margin: 40px 0 26px;
+}
+
+.voltar:hover {
+  color: var(--gold);
+}
+
+.capa {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin: 28px 0;
+}
+
+.capa img {
+  object-fit: cover;
+}
+
+.texto {
+  max-width: var(--leitura);
+  color: var(--ink-soft);
+  font-size: 17px;
+}
+
+.galeria {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 44px 0;
+}
+
+.foto {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  aspect-ratio: 1 / 1;
+}
+
+.foto img {
+  object-fit: cover;
+  filter: sepia(0.18) saturate(0.88) contrast(1.04);
+}
+
+.pe {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  padding: 28px 0 8px;
+}
+
+.contagem {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (min-width: 880px) {
+  .capa {
+    aspect-ratio: 16 / 9;
+  }
+
+  .galeria {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}

@@ -1,0 +1,150 @@
+.capa {
+  position: relative;
+  height: min(52vh, 440px);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.capa img {
+  object-fit: cover;
+}
+
+.corpo {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.voltar {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+  text-decoration: none;
+  margin: 36px 0 24px;
+}
+
+.voltar:hover {
+  color: var(--gold);
+}
+
+.meta {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.titulo {
+  font-size: clamp(28px, 4.2vw, 42px);
+  margin-bottom: 32px;
+}
+
+.texto {
+  font-size: 17px;
+  color: var(--ink-soft);
+  margin-bottom: 1.4em;
+}
+
+.galeria {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 36px 0;
+}
+
+.galeriaFoto {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.galeriaFoto img {
+  object-fit: cover;
+  filter: sepia(0.18) saturate(0.88) contrast(1.04);
+}
+
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin: 36px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video img {
+  object-fit: cover;
+}
+
+.videoBotao {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(24, 23, 21, 0.62);
+  color: var(--ink-on-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  padding-left: 4px;
+}
+
+.videoLegenda {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 36px;
+}
+
+.links {
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+  margin-top: 40px;
+}
+
+.linksRotulo {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.linksLista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linkInativo {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.fecho {
+  padding: 36px 0 24px;
+}
+
+.emPreparo {
+  margin: 8px 0 40px;
+}
+
+@media (min-width: 880px) {
+  .galeria {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}

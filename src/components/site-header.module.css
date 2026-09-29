@@ -1,0 +1,231 @@
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.faixa {
+  max-width: var(--largura);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 24px;
+}
+
+.marca {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navegacao {
+  display: none;
+}
+
+.link {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--gold);
+}
+
+.linkAtivo {
+  color: var(--gold);
+}
+
+.orcamento {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid var(--gold-stroke);
+  border-radius: var(--radius-pequeno);
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+
+.orcamento:hover {
+  background: color-mix(in srgb, var(--gold-stroke) 10%, transparent);
+}
+
+.hamburguer {
+  background: none;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 40px;
+}
+
+.hamburguer span {
+  display: block;
+  height: 1px;
+  background: var(--ink);
+}
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.fundo {
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 23, 21, 0.55);
+  backdrop-filter: blur(2px);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  animation: aparecer 300ms ease-out both;
+}
+
+.painel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(86vw, 340px);
+  background: var(--paper);
+  box-shadow: -18px 0 48px rgba(24, 23, 21, 0.22);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: entrar 420ms var(--easing) both;
+}
+
+/* Os links chegam em cascata, logo depois do painel. */
+.painelLinks > a {
+  animation: subir 420ms var(--easing) both;
+  animation-delay: calc(120ms + var(--ordem, 0) * 40ms);
+}
+
+.painelPe {
+  animation: subir 420ms var(--easing) 420ms both;
+}
+
+.menuSaindo .fundo {
+  animation: sumir 260ms ease-in both;
+}
+
+.menuSaindo .painel {
+  animation: sair 260ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes sumir {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes entrar {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes sair {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.fecharLinha {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fechar {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--ink);
+  padding: 4px 8px;
+}
+
+.painelLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.painelLink {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+  text-decoration: none;
+}
+
+.painelPe {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.painelContato {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.painelContato a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+@media (min-width: 880px) {
+  .navegacao {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .hamburguer {
+    display: none;
+  }
+}
+
+.painelLink.linkAtivo {
+  color: var(--gold);
+}

@@ -1,0 +1,187 @@
+/* Tokens do design aprovado — ver docs/conteudo/design-tokens.md */
+:root {
+  --paper: #f4f2ef;
+  --surface: #e9e6e1;
+  --surface-warm: #fbf7f0;
+  --field: #fffdfb;
+  --ink: #201f1d;
+  --ink-soft: #3d3936;
+  --ink-on-dark: #f7f4ef;
+  /* Escurecidos em relação ao protótipo para contraste AA (4,5:1) — ver design-tokens.md. */
+  --muted: #625d57;
+  --muted-strong: #57524c;
+  --line: rgba(32, 31, 29, 0.14);
+  --line-strong: rgba(32, 31, 29, 0.25);
+  --gold: #7d5411;
+  --gold-stroke: #b68235;
+  --gold-deep: #5f3f0c;
+  --erro: #8a3b2a;
+  --erro-fundo: #fdf6f4;
+  --ocupado: #e3ddd3;
+  --radius: 4px;
+  --radius-pequeno: 3px;
+
+  --leitura: 68ch;
+  --largura: 1240px;
+  --easing: cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading), Georgia, serif;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+p {
+  margin: 0 0 1.1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--gold);
+  text-underline-offset: 0.25em;
+}
+
+img {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Acessível a leitor de tela, invisível na tela. */
+.apenas-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pular-para-conteudo {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--ink-on-dark);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  transition: top 160ms var(--easing);
+}
+
+.pular-para-conteudo:focus {
+  top: 8px;
+}
+
+/*
+ * Transição entre páginas (View Transitions API, via <ViewTransition> em (site)/template.tsx).
+ * A página que sai some rápido; a nova chega com calma, subindo um pouco. O cabeçalho é a
+ * âncora: não se mexe. Sem suporte do navegador, a troca simplesmente acontece sem animação.
+ */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.pagina-sai) {
+  animation: 160ms ease-in both pagina-some;
+}
+
+::view-transition-new(.pagina-entra) {
+  animation:
+    320ms ease-out 120ms both pagina-surge,
+    480ms var(--easing) both pagina-sobe;
+}
+
+::view-transition-group(cabecalho-do-site) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(cabecalho-do-site) {
+  display: none;
+}
+
+::view-transition-new(cabecalho-do-site) {
+  animation: none;
+}
+
+/* A capa do álbum viaja do cartão do portfólio até o topo da página do álbum. */
+::view-transition-group(.capa) {
+  animation-duration: 480ms;
+  animation-timing-function: var(--easing);
+}
+
+@keyframes pagina-some {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pagina-surge {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pagina-sobe {
+  from {
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

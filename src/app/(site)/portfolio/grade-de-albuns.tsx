@@ -1,0 +1,45 @@
+'use client';
+
+import Link from 'next/link';
+import { ViewTransition } from 'react';
+import { FotoDoConteudo } from '@/components/foto-do-conteudo';
+import { useConteudo } from '@/dados/conteudo-do-site';
+import type { CategoriaDeAlbum } from '@/dados/schema';
+import estilos from './portfolio.module.css';
+
+export function GradeDeAlbuns({ ativa }: { readonly ativa: CategoriaDeAlbum }) {
+  const { albuns } = useConteudo().conteudo;
+  const visiveis = albuns.filter((a) => a.categoria === ativa);
+
+  if (visiveis.length === 0) {
+    return <p className={estilos.vazio}>Nenhum álbum nesta categoria ainda.</p>;
+  }
+
+  return (
+    <div className={estilos.grade}>
+      {visiveis.map((album, i) => (
+        <Link key={album.slug} href={`/portfolio/${album.slug}`} className={estilos.cartao}>
+          {/* Mesmo nome da capa na página do álbum: a foto viaja de uma para a outra. */}
+          <ViewTransition name={`capa-${album.slug}`} share="capa" default="none">
+            <div className={estilos.moldura}>
+              <FotoDoConteudo
+                id={album.capa}
+                alt={`Capa do álbum ${album.nome}`}
+                preencher
+                // A primeira linha (até 3 capas em 1440px) está na primeira dobra: nada de lazy.
+                priority={i < 3}
+                sizes="(min-width: 880px) 33vw, (min-width: 620px) 50vw, 100vw"
+              />
+            </div>
+          </ViewTransition>
+          <div className={estilos.info}>
+            <span className={estilos.meta}>{album.meta}</span>
+            <span className={estilos.nome}>{album.nome}</span>
+            <span className={estilos.resumo}>{album.resumo}</span>
+            <span className={estilos.total}>Ver as {album.fotos.length + 1} fotos</span>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
