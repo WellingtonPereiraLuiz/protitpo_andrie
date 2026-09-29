@@ -43,7 +43,7 @@ test('adicionar um ensaio novo cria cartão e página no site', async ({ page })
   await expect(page).toHaveURL('/admin/albuns/ana-pedro');
   await expect(page.getByText('/portfolio/ana-pedro')).toBeVisible();
 
-  await page.goto('/portfolio?categoria=Ensaios');
+  await page.goto('/portfolio/categoria/ensaios');
   const cartao = page.getByRole('link', { name: /Ana & Pedro/ });
   await expect(cartao).toContainText('Fim de tarde na serra, antes do casamento.');
   await expect(cartao).toContainText('Ver as 3 fotos');

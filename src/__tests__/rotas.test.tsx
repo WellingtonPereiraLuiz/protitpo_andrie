@@ -8,6 +8,9 @@ import PostPage, {
 } from '@/app/(site)/blog/[slug]/page';
 import ContatoPage from '@/app/(site)/contato/page';
 import HomePage from '@/app/(site)/page';
+import CategoriaPage, {
+  generateStaticParams as generateStaticParamsDeCategoria,
+} from '@/app/(site)/portfolio/categoria/[categoria]/page';
 import PortfolioPage from '@/app/(site)/portfolio/page';
 import AlbumPage, {
   generateMetadata as generateMetadataDeAlbum,
@@ -85,8 +88,8 @@ describe('rotas estáticas', () => {
 });
 
 describe('rotas dinâmicas', () => {
-  it('o portfólio lista os álbuns da categoria padrão', async () => {
-    render(await PortfolioPage({ searchParams: Promise.resolve({}) }));
+  it('o portfólio lista os álbuns da categoria padrão', () => {
+    render(<PortfolioPage />);
     for (const album of ALBUNS.filter((a) => a.categoria === 'Casamentos')) {
       expect(screen.getByText(album.nome)).toBeInTheDocument();
     }
@@ -94,7 +97,7 @@ describe('rotas dinâmicas', () => {
   });
 
   it('o portfólio filtra por categoria', async () => {
-    render(await PortfolioPage({ searchParams: Promise.resolve({ categoria: 'Ensaios' }) }));
+    render(await CategoriaPage({ params: Promise.resolve({ categoria: 'ensaios' }) }));
     expect(screen.getByText('Esperando a Alice')).toBeInTheDocument();
     expect(screen.queryByText('Marina & Téo')).not.toBeInTheDocument();
   });
@@ -118,6 +121,20 @@ describe('rotas dinâmicas', () => {
   it('generateStaticParams cobre todos os álbuns', () => {
     const gerados = generateStaticParamsDeAlbum().map((p) => p.slug);
     expect(new Set(gerados)).toEqual(new Set(ALBUNS.map((a) => a.slug)));
+  });
+
+  it('cada categoria do portfólio tem página estática e endereço sem acento', () => {
+    expect(generateStaticParamsDeCategoria()).toEqual([
+      { categoria: 'casamentos' },
+      { categoria: 'ensaios' },
+      { categoria: 'videos' },
+    ]);
+  });
+
+  it('categoria que não existe dispara notFound', async () => {
+    await expect(
+      CategoriaPage({ params: Promise.resolve({ categoria: 'nao-existe' }) }),
+    ).rejects.toThrow();
   });
 
   it('generateStaticParams cobre todos os posts', () => {

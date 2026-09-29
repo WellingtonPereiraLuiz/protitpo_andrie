@@ -183,7 +183,7 @@ Cada item vira teste; nenhuma fatia está pronta sem os seus testes verdes em `n
 13. Todos os gates continuam verdes; a medição da home (`scripts/medir-carregamento.mjs`) não
     piora mais que 10% em nenhum cenário.
 14. **Adicionar álbum** "Ana & Pedro" (Ensaios) faz o cartão aparecer em
-    `/portfolio?categoria=Ensaios` e a página `/portfolio/ana-pedro` abrir com o texto
+    `/portfolio/categoria/ensaios` e a página `/portfolio/ana-pedro` abrir com o texto
     salvo. _(Playwright)_
 15. Editar o nome e a descrição de um álbum existente muda o cartão e a página. _(Playwright)_
 16. As telas do painel não importam `localStorage`/IndexedDB direto: só as interfaces de

@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test';
 const PAGINAS = [
   '/',
   '/portfolio',
-  '/portfolio?categoria=Ensaios',
+  '/portfolio/categoria/ensaios',
   '/portfolio/marina-teo',
   '/servicos',
   '/sobre',

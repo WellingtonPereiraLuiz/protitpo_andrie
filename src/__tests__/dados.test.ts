@@ -256,6 +256,11 @@ describe('operações sobre o documento', () => {
     expect(validarConteudo(conteudo).ok).toBe(true);
   });
 
+  it('um álbum chamado "Categoria" não toma o endereço das páginas de categoria', () => {
+    const dados = { ...ALBUM_EM_BRANCO, nome: 'Categoria' };
+    expect(adicionarAlbum(SEMENTE, dados).slug).toBe('categoria-2');
+  });
+
   it('álbum em branco não passa no schema: pede nome, resumo, parágrafo e capa', () => {
     const { conteudo } = adicionarAlbum(SEMENTE, ALBUM_EM_BRANCO);
     const r = validarConteudo(conteudo);

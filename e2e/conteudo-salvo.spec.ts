@@ -32,7 +32,7 @@ test('o site mostra o conteúdo salvo neste navegador, inclusive um álbum novo'
     page.getByRole('heading', { level: 1, name: 'Título salvo no navegador' }),
   ).toBeVisible();
 
-  await page.goto('/portfolio?categoria=Ensaios');
+  await page.goto('/portfolio/categoria/ensaios');
   await page.getByRole('link', { name: /Ana & Pedro/ }).click();
   await expect(page).toHaveURL('/portfolio/ana-pedro');
   await expect(page.getByRole('heading', { level: 1, name: 'Ana & Pedro' })).toBeVisible();

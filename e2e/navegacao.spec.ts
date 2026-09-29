@@ -56,3 +56,23 @@ test('da home até um álbum, pelo menu e pelo cartão', async ({ page }) => {
 
   expect(erros, 'erros no console do navegador').toEqual([]);
 });
+
+test('o filtro de categoria leva a uma página estática da categoria', async ({ page }) => {
+  await page.goto('/portfolio');
+  const filtros = page.getByRole('navigation', { name: 'Filtrar por categoria' });
+  await expect(filtros.getByRole('link', { name: 'Casamentos' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
+  await filtros.getByRole('link', { name: 'Ensaios' }).click();
+  await expect(page).toHaveURL('/portfolio/categoria/ensaios');
+  await expect(filtros.getByRole('link', { name: 'Ensaios' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
+  await expect(page.getByRole('link', { name: /Esperando a Alice/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Marina & Téo/ })).toHaveCount(0);
+
+  const resposta = await page.goto('/portfolio/categoria/nao-existe');
+  expect(resposta?.status()).toBe(404);
+});

@@ -39,6 +39,9 @@ export function excluirAlbum(c: ConteudoDoSite, slug: string): ConteudoDoSite {
   };
 }
 
+/** Segmentos de /portfolio/… que já são rotas do site e não podem virar álbum. */
+export const ENDERECOS_RESERVADOS_DO_PORTFOLIO = ['categoria'] as const;
+
 export type DadosDeAlbumNovo = Omit<AlbumDoSite, 'slug'>;
 
 export const ALBUM_EM_BRANCO: DadosDeAlbumNovo = {
@@ -58,7 +61,7 @@ export function adicionarAlbum(
 ): { conteudo: ConteudoDoSite; slug: string } {
   const slug = slugUnico(
     dados.nome,
-    c.albuns.map((a) => a.slug),
+    [...c.albuns.map((a) => a.slug), ...ENDERECOS_RESERVADOS_DO_PORTFOLIO],
     'album',
   );
   return { conteudo: { ...c, albuns: [...c.albuns, { slug, ...dados }] }, slug };
