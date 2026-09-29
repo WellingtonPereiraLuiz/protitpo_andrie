@@ -1,7 +1,7 @@
 # Onde parei — 29/09/2026
 
-Branch: `feat/next-migration`. Nada foi para a `main`. **Nada foi enviado ao GitHub** (sem
-push). Clone de trabalho: `~/Documents/projetos/protitpo_andrie` (Windows; não existe
+Branch: `feat/next-migration`, enviada ao GitHub (`origin/feat/next-migration`). Nada foi
+para a `main`. Clone de trabalho: `~/Documents/projetos/protitpo_andrie` (Windows; não existe
 `~/Documentos` nesta máquina).
 
 ---
@@ -17,15 +17,15 @@ trocar por um banco.
 
 ## Gates
 
-| Gate                       | Estado                                                     |
-| -------------------------- | ---------------------------------------------------------- |
-| Prettier                   | ✅                                                         |
-| ESLint estrito (com tipos) | ✅ app + `e2e/`                                            |
-| `tsc --noEmit` estrito     | ✅ app + `tsconfig.e2e.json`                               |
-| Vitest                     | ✅ 79 testes, 4 arquivos                                   |
-| `next build`               | ✅                                                         |
-| Playwright                 | ✅ 47 testes × 2 viewports (390, 1440) = 94, incluindo axe |
-| Medição do "depois"        | ✅ `docs/evidencias/depois/medicoes.md`                    |
+| Gate                       | Estado                                                |
+| -------------------------- | ----------------------------------------------------- |
+| Prettier                   | ✅                                                    |
+| ESLint estrito (com tipos) | ✅ app + `e2e/`                                       |
+| `tsc --noEmit` estrito     | ✅ app + `tsconfig.e2e.json`                          |
+| Vitest                     | ✅ 82 testes, 4 arquivos                              |
+| `next build`               | ✅                                                    |
+| Playwright                 | ✅ 64 testes × 2 viewports (390, 1440) = 128, com axe |
+| Medição do "depois"        | ✅ `docs/evidencias/depois/medicoes.md`               |
 
 Home: **129 ms / 870 ms** com o painel, contra 132 / 905 antes dele (antes do Next:
 564 / 12.433 nesta máquina).
@@ -67,21 +67,21 @@ alguma tela importar `dados/local` ou tocar em `localStorage`/`indexedDB` direto
 
 ---
 
-## ⚠️ Pendências que dependem de decisão sua
+## Decisões tomadas em 29/09 (com a liberação do dono para decidir)
 
-1. **`/portfolio` como rota dinâmica (ƒ)** — continua lendo `?categoria=` no servidor.
-2. **Aviso de demonstração** — segue em itálico no rodapé (protótipo usava modal).
-3. **Posts sem corpo** — mostram resumo + aviso. Agora dá para escrever o corpo pelo painel.
-4. **Três cartões do blog com slug próprio** — mantido.
-5. **`AGENTS.md` e `CLAUDE.md`** gerados pelo `next dev` — fora do Git; commitar, ignorar
-   ou desligar (`agentRules: false`)?
-6. **`.gitattributes` com `eol=lf`** — neste clone foi resolvido com
-   `git config --local core.autocrlf false`; sem isso o Prettier reprova ~67 arquivos no
-   Windows.
-7. **LCP de `/portfolio`** — a capa do primeiro cartão é o LCP e está `lazy`. Não corrigido.
-8. **Contraste do botão do site público** — `ui.botao` usa texto claro sobre `--gold`
-   (3,99:1, abaixo do AA 4,5:1). O axe achou no painel, onde foi corrigido; no site não
-   mexi (decisão de design, fora da spec).
+| #   | Pendência                        | Decisão                                                                                                                  | Commit    |
+| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------- |
+| 1   | `/portfolio` dinâmico            | Categorias viraram páginas estáticas: `/portfolio/categoria/ensaios`, `/videos`. Nenhuma rota pública é mais ƒ.          | `257aa95` |
+| 2   | Aviso de demonstração            | Fica no rodapé. O modal do protótipo interrompia a visita; o painel tem a própria faixa.                                 | —         |
+| 3   | Posts sem corpo                  | Resumo + aviso; o corpo agora se escreve pelo painel.                                                                    | —         |
+| 4   | Slug próprio dos cartões do blog | Mantido: permite link direto para cada post.                                                                             | —         |
+| 5   | `AGENTS.md` / `CLAUDE.md`        | Commitados (o `next dev` os recria; fora do Git a árvore ficava suja), com as regras do projeto abaixo do bloco do Next. | `d81b804` |
+| 6   | Fim de linha no Windows          | `.gitattributes` com `eol=lf`: clone com `autocrlf=true` sai em LF e o Prettier passa (verificado).                      | `24d8684` |
+| 7   | LCP de `/portfolio` e `/blog`    | Primeira capa sem `lazy`; teste e2e confere o LCP de 5 páginas.                                                          | `fd5dcd5` |
+| 8   | Contraste do site público        | `--gold` → `#7d5411`, `--muted` → `#625d57`, texto do rodapé 62%. Axe em todas as páginas públicas virou gate.           | `fd5dcd5` |
+
+O desvio de paleta está registrado em `docs/conteudo/design-tokens.md`. As capturas em
+`docs/evidencias/depois/` são da Etapa 2 e mostram as cores antigas.
 
 ---
 
