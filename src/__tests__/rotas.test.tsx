@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import AgendaPage from '@/app/(site)/agenda/page';
 import BlogPage from '@/app/(site)/blog/page';
@@ -58,6 +58,16 @@ describe('rotas estáticas', () => {
       screen.getByRole('heading', { level: 1, name: 'Datas livres de 2026' }),
     ).toBeInTheDocument();
     expect(screen.getByText(/Este calendário é só uma consulta visual/)).toBeInTheDocument();
+  });
+
+  it('agenda risca o dia 7 de novembro e deixa o dia 8 livre', () => {
+    render(<AgendaPage />);
+    const novembro = within(screen.getByRole('region', { name: 'Novembro de 2026' }));
+    const celula = (n: string) => novembro.getByText(n, { selector: 'span' });
+    expect(celula('7')).toHaveClass('diaOcupado');
+    expect(celula('7')).toHaveTextContent('7 — ocupada');
+    expect(celula('8')).not.toHaveClass('diaOcupado');
+    expect(celula('8')).toHaveClass('diaFds');
   });
 
   it('contato mostra o formulário e diz que nada é enviado pelo site', () => {
