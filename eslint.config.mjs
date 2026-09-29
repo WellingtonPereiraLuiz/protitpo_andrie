@@ -31,6 +31,17 @@ export default tseslint.config(
     },
   },
   {
+    // Testes de ponta a ponta ficam fora do tsconfig.json do app; têm o seu próprio.
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        project: './tsconfig.e2e.json',
+        tsconfigRootDir: raiz,
+      },
+    },
+  },
+  {
     // Arquivos de configuração e scripts não entram no programa TypeScript.
     files: ['*.mjs', 'scripts/**/*.mjs'],
     extends: [tseslint.configs.disableTypeChecked],
