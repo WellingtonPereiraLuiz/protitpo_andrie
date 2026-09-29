@@ -7,13 +7,14 @@
   --ink: #201f1d;
   --ink-soft: #3d3936;
   --ink-on-dark: #f7f4ef;
-  --muted: #85807a;
+  /* Escurecidos em relação ao protótipo para contraste AA (4,5:1) — ver design-tokens.md. */
+  --muted: #625d57;
   --muted-strong: #57524c;
   --line: rgba(32, 31, 29, 0.14);
   --line-strong: rgba(32, 31, 29, 0.25);
-  --gold: #a06f24;
+  --gold: #7d5411;
   --gold-stroke: #b68235;
-  --gold-deep: #7d5411;
+  --gold-deep: #5f3f0c;
   --erro: #8a3b2a;
   --erro-fundo: #fdf6f4;
   --ocupado: #e3ddd3;

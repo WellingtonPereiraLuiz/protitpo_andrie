@@ -17,6 +17,22 @@ estes valores como referência oficial; os nomes de variável abaixo são os que
 | Ouro traço        | `#B68235` | Contornos de botão | `--gold-stroke`  |
 | Erro              | `#8A3B2A` | Campo obrigatório  | `--erro`         |
 
+### Desvio deliberado da paleta (29/09/2026): contraste AA
+
+O axe (WCAG 2.1 AA) reprovou dois tokens em quase todas as páginas, em texto pequeno
+(11–16px) sobre o papel `#F4F2EF`, onde o mínimo é 4,5:1:
+
+| Token          | Protótipo | Contraste | Agora     | Contraste | Onde mais foi medido                          |
+| -------------- | --------- | --------- | --------- | --------- | --------------------------------------------- |
+| `--gold`       | `#A06F24` | 3,92:1    | `#7D5411` | ~6,0:1    | texto claro sobre ele (botões): 3,99 → ~6,1:1 |
+| `--muted`      | `#85807A` | 3,50:1    | `#625D57` | ~5,8:1    | dia ocupado `#E3DDD3`: 2,89 → ~4,8:1          |
+| `--gold-deep`  | `#7D5411` | —         | `#5F3F0C` | —         | só hover, um degrau abaixo do novo `--gold`   |
+| rodapé (texto) | 45% claro | 4,12:1    | 62% claro | ~6,4:1    | `rgba(247,244,239,…)` sobre `--ink`           |
+
+O matiz foi mantido; só a luminosidade desceu, o mínimo para passar. `--gold-stroke` (só
+contornos, que pedem 3:1) não mudou. Um teste e2e roda o axe em todas as páginas públicas
+e falha se voltar a haver violação séria.
+
 Bloco `:root` publicado pelo protótipo:
 
 ```css

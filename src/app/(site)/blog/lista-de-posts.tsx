@@ -13,13 +13,14 @@ export function ListaDePosts() {
 
   return (
     <div className={estilos.lista}>
-      {publicados.map((post) => (
+      {publicados.map((post, i) => (
         <Link key={post.slug} href={`/blog/${post.slug}`} className={estilos.cartao}>
           <div className={estilos.moldura}>
             <FotoDoConteudo
               id={post.capa}
               alt={`Imagem do post “${post.titulo}”`}
               preencher
+              priority={i === 0}
               sizes="(min-width: 880px) 40vw, 100vw"
             />
           </div>

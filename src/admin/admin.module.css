@@ -49,9 +49,8 @@
   border-radius: var(--radius-pequeno);
   padding: 10px 16px;
   cursor: pointer;
-  border: 1px solid var(--gold-deep);
-  /* --gold-deep, não --gold: com texto claro de 14px, --gold dá 3,99:1 (abaixo do AA). */
-  background: var(--gold-deep);
+  border: 1px solid var(--gold);
+  background: var(--gold);
   color: var(--ink-on-dark);
   text-decoration: none;
   display: inline-flex;
@@ -61,7 +60,7 @@
 }
 
 .botao:hover {
-  background: #5f3f0c;
+  background: var(--gold-deep);
 }
 
 .botaoSecundario {

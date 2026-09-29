@@ -16,13 +16,15 @@ export function GradeDeAlbuns({ ativa }: { readonly ativa: CategoriaDeAlbum }) {
 
   return (
     <div className={estilos.grade}>
-      {visiveis.map((album) => (
+      {visiveis.map((album, i) => (
         <Link key={album.slug} href={`/portfolio/${album.slug}`} className={estilos.cartao}>
           <div className={estilos.moldura}>
             <FotoDoConteudo
               id={album.capa}
               alt={`Capa do álbum ${album.nome}`}
               preencher
+              // A primeira capa é a maior imagem da primeira dobra (LCP): não pode ser lazy.
+              priority={i === 0}
               sizes="(min-width: 880px) 33vw, (min-width: 620px) 50vw, 100vw"
             />
           </div>
