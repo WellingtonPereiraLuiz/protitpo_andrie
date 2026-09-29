@@ -66,12 +66,15 @@ test('um dia focado pelo teclado não fica escondido atrás da barra de salvar',
   const dia = page.getByRole('button', { name: /^sábado, 28 de novembro de 2026/ });
   await dia.focus();
   await expect(dia).toBeFocused();
-  const { fimDoFoco, topoDaBarra } = await page.evaluate(() => {
-    const barra = document.querySelector('[role="status"]')?.parentElement;
-    return {
-      fimDoFoco: document.activeElement?.getBoundingClientRect().bottom ?? 0,
-      topoDaBarra: barra?.getBoundingClientRect().top ?? 0,
-    };
-  });
-  expect(fimDoFoco).toBeLessThanOrEqual(topoDaBarra);
+  // A rolagem do site é suave (scroll-behavior: smooth): espera ela terminar.
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const barra = document.querySelector('[role="status"]')?.parentElement;
+        const fimDoFoco = document.activeElement?.getBoundingClientRect().bottom ?? 0;
+        const topoDaBarra = barra?.getBoundingClientRect().top ?? 0;
+        return fimDoFoco <= topoDaBarra;
+      }),
+    )
+    .toBe(true);
 });
