@@ -96,7 +96,7 @@ test('o site público navega pelos meses até 12 meses à frente', async ({ page
   await expect(proximo).toBeDisabled();
 });
 
-test('"Abrir" na lista de próximos leva aos detalhes do compromisso', async ({ page }) => {
+test('"Abrir" na lista de próximos mostra as informações do compromisso', async ({ page }) => {
   await entrarNoPainel(page);
   await page.goto('/admin/agenda');
   // Primeiro, dá um local e uma observação ao compromisso de 21/11, para ver que aparecem.
@@ -116,13 +116,26 @@ test('"Abrir" na lista de próximos leva aos detalhes do compromisso', async ({ 
   await expect(item).toContainText('Levar drone. Chegar às 15h.');
   await item.getByRole('button', { name: 'Abrir sábado, 21 de novembro de 2026' }).click();
 
+  // Abre uma janela com as informações do compromisso.
+  const janela = page.getByRole('dialog', { name: 'Ensaio (exemplo)' });
+  await expect(janela).toBeVisible();
+  await expect(janela).toContainText('sábado, 21 de novembro de 2026');
+  await expect(janela).toContainText('Ensaio');
+  await expect(janela).toContainText('Cachoeira do Rio');
+  await expect(janela).toContainText('Levar drone. Chegar às 15h.');
+  await expect(janela.getByRole('button', { name: 'Fechar' })).toBeFocused();
+
+  // Esc fecha; "Editar este dia" leva ao formulário do dia, já no mês certo.
+  await page.keyboard.press('Escape');
+  await expect(janela).toBeHidden();
+  await item.getByRole('button', { name: 'Abrir sábado, 21 de novembro de 2026' }).click();
+  await janela.getByRole('button', { name: 'Editar este dia' }).click();
+  await expect(janela).toBeHidden();
+
   const detalhes = page.getByRole('group', { name: 'sábado, 21 de novembro de 2026' });
   await expect(detalhes).toBeFocused();
   await expect(detalhes).toBeInViewport();
   await expect(page.getByRole('heading', { level: 3, name: 'Novembro de 2026' })).toBeVisible();
-  await expect(detalhes.getByRole('textbox', { name: 'Título', exact: true })).toHaveValue(
-    'Ensaio (exemplo)',
-  );
   await expect(detalhes.getByRole('textbox', { name: 'Local', exact: true })).toHaveValue(
     'Cachoeira do Rio',
   );

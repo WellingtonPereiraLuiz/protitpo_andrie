@@ -95,3 +95,65 @@
   outline: 3px solid var(--gold);
   outline-offset: 2px;
 }
+
+/* Janela "Abrir" de um compromisso (dialog nativo, modal). */
+.janela {
+  border: 0;
+  border-radius: var(--radius);
+  padding: 0;
+  width: min(92vw, 480px);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 64px rgba(24, 23, 21, 0.35);
+}
+
+.janela[open] {
+  animation: janela-entra 260ms var(--easing);
+}
+
+.janela::backdrop {
+  background: rgba(24, 23, 21, 0.55);
+  animation: janela-fundo 260ms ease-out;
+}
+
+.janelaCorpo {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.janelaTitulo {
+  font-size: 26px;
+  margin: 0;
+}
+
+.janelaDados {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.janelaDados dt {
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.janelaDados dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@keyframes janela-entra {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+@keyframes janela-fundo {
+  from {
+    opacity: 0;
+  }
+}

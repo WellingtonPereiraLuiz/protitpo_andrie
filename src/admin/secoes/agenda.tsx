@@ -64,21 +64,38 @@ export function SecaoAgenda() {
     });
   };
 
-  // "Abrir" na lista de próximos: o formulário do dia fica acima da lista, então a tela
-  // precisa ir até ele — senão o clique parece não fazer nada.
-  const detalhes = useRef<HTMLFieldSetElement>(null);
-  const [pedidosDeAbrir, setPedidosDeAbrir] = useState(0);
+  // "Abrir" na lista de próximos: uma janela com as informações do compromisso.
+  const janela = useRef<HTMLDialogElement>(null);
+  const botaoFecharJanela = useRef<HTMLButtonElement>(null);
+  const [aberto, setAberto] = useState<string | null>(null);
+  const noAberto = aberto ? porData.get(aberto) : undefined;
   useEffect(() => {
-    if (pedidosDeAbrir === 0) return;
+    const d = janela.current;
+    if (!d) return;
+    if (aberto && !d.open) {
+      d.showModal();
+      // Só depois de aberta a janela o botão pode receber foco (autoFocus chega cedo demais).
+      botaoFecharJanela.current?.focus();
+    }
+    if (!aberto && d.open) d.close();
+  }, [aberto]);
+
+  // "Editar este dia": o formulário fica acima da lista, então a tela vai até ele.
+  // Este efeito vem depois do da janela: fechar o <dialog> devolve o foco ao botão "Abrir",
+  // e o foco no formulário tem que ser o último a acontecer.
+  const detalhes = useRef<HTMLFieldSetElement>(null);
+  const [pedidosDeEditar, setPedidosDeEditar] = useState(0);
+  useEffect(() => {
+    if (pedidosDeEditar === 0) return;
     detalhes.current?.scrollIntoView({ block: 'start' });
     detalhes.current?.focus({ preventScroll: true });
-  }, [pedidosDeAbrir]);
+  }, [pedidosDeEditar]);
 
-  const abrirDia = (data: string) => {
+  const editarDia = (data: string) => {
     setSelecionada(data);
     const i = meses.findIndex((m) => compararMeses(m, mesDaData(data)) === 0);
     if (i >= 0) setIndice(i);
-    setPedidosDeAbrir((n) => n + 1);
+    setPedidosDeEditar((n) => n + 1);
   };
 
   const proximos = compromissos.filter((c) => (hoje ? c.data >= hoje : true));
@@ -262,8 +279,9 @@ export function SecaoAgenda() {
                     type="button"
                     className={estilos.botaoSecundario}
                     aria-label={`Abrir ${dataPorExtenso(c.data)}`}
+                    aria-haspopup="dialog"
                     onClick={() => {
-                      abrirDia(c.data);
+                      setAberto(c.data);
                     }}
                   >
                     Abrir
@@ -274,6 +292,60 @@ export function SecaoAgenda() {
           </ul>
         )}
       </section>
+
+      <dialog
+        ref={janela}
+        className={agenda.janela}
+        aria-labelledby="janela-titulo"
+        onClose={() => {
+          setAberto(null);
+        }}
+        onClick={(e) => {
+          // Clique fora do conteúdo (no fundo escurecido) fecha.
+          if (e.target === e.currentTarget) setAberto(null);
+        }}
+      >
+        {aberto && noAberto && (
+          <div className={agenda.janelaCorpo}>
+            <p className={estilos.ajuda} style={{ margin: 0 }}>
+              {dataPorExtenso(aberto)}
+            </p>
+            <h3 id="janela-titulo" className={agenda.janelaTitulo}>
+              {noAberto.titulo || 'Sem título'}
+            </h3>
+            <dl className={agenda.janelaDados}>
+              <dt>Tipo</dt>
+              <dd>{noAberto.tipo}</dd>
+              <dt>Local</dt>
+              <dd>{noAberto.local || 'Não informado'}</dd>
+              <dt>Observação</dt>
+              <dd>{noAberto.observacao || 'Nenhuma'}</dd>
+            </dl>
+            <div className={estilos.acoes}>
+              <button
+                type="button"
+                className={estilos.botao}
+                onClick={() => {
+                  setAberto(null);
+                  editarDia(aberto);
+                }}
+              >
+                Editar este dia
+              </button>
+              <button
+                ref={botaoFecharJanela}
+                type="button"
+                className={estilos.botaoDiscreto}
+                onClick={() => {
+                  setAberto(null);
+                }}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        )}
+      </dialog>
     </form>
   );
 }
