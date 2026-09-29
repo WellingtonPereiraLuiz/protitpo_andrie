@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ViewTransition } from 'react';
 import { FotoDoConteudo } from '@/components/foto-do-conteudo';
 import { Carregando, NaoEncontrado } from '@/components/nao-encontrado';
 import ui from '@/components/ui.module.css';
@@ -30,15 +31,17 @@ export function Album({ slug }: { readonly slug: string }) {
         <h1 className={ui.titulo}>{album.nome}</h1>
       </header>
 
-      <div className={estilos.capa}>
-        <FotoDoConteudo
-          id={album.capa}
-          alt={`Foto de capa do álbum ${album.nome}`}
-          preencher
-          priority
-          sizes="(min-width: 1240px) 1192px, 100vw"
-        />
-      </div>
+      <ViewTransition name={`capa-${album.slug}`} share="capa" default="none">
+        <div className={estilos.capa}>
+          <FotoDoConteudo
+            id={album.capa}
+            alt={`Foto de capa do álbum ${album.nome}`}
+            preencher
+            priority
+            sizes="(min-width: 1240px) 1192px, 100vw"
+          />
+        </div>
+      </ViewTransition>
 
       <div className={estilos.texto}>
         {album.texto.map((p, i) => (

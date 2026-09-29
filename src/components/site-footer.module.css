@@ -1,87 +1,67 @@
 .rodape {
   background: var(--ink);
   color: var(--ink-on-dark);
-  margin-top: 96px;
+  margin-top: 64px;
 }
 
 .interno {
   max-width: var(--largura);
   margin: 0 auto;
-  padding: 56px 24px 32px;
-}
-
-.colunas {
-  display: grid;
-  gap: 40px;
-  grid-template-columns: 1fr;
-}
-
-.titulo {
-  font-family: var(--font-heading), Georgia, serif;
-  font-size: 16px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.descricao {
-  color: rgba(247, 244, 239, 0.66);
-  font-size: 14px;
-  max-width: 34ch;
-}
-
-.rotulo {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(247, 244, 239, 0.62);
-  margin-bottom: 14px;
-  display: block;
-}
-
-.lista {
+  padding: 28px 24px 22px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 18px;
 }
 
-.lista a {
-  color: rgba(247, 244, 239, 0.82);
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 32px;
+}
+
+.marca {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-on-dark);
   text-decoration: none;
-  font-size: 14px;
-  width: fit-content;
 }
 
-.lista a:hover {
-  color: var(--gold-stroke);
-}
-
-.linha {
-  height: 1px;
-  background: rgba(247, 244, 239, 0.14);
-  margin: 40px 0 22px;
-}
-
-.base {
+.contatos {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 24px;
-  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contatos a {
+  color: rgba(247, 244, 239, 0.82);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.contatos a:hover {
+  color: var(--gold-stroke);
+}
+
+.base {
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(247, 244, 239, 0.14);
   font-size: 12px;
+  line-height: 1.6;
   color: rgba(247, 244, 239, 0.62);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 24px;
 }
 
 .aviso {
-  margin-top: 14px;
-  font-size: 12px;
-  color: rgba(247, 244, 239, 0.62);
   font-style: italic;
-}
-
-@media (min-width: 880px) {
-  .colunas {
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: 56px;
-  }
 }

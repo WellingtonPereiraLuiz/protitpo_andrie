@@ -3,10 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { CONTATO, NAV, SITE } from '@/content/site';
+import { cx } from '@/lib/cx';
 import { linkDoWhatsApp } from '@/lib/whatsapp';
 import estilos from './site-header.module.css';
-import { cx } from '@/lib/cx';
+
+/** Tem que bater com a duração de `sair` em site-header.module.css. */
+const DURACAO_DO_FECHAMENTO = 260;
 
 function estaAtivo(pathname: string, href: string): boolean {
   if (href === '/') return pathname === '/';
@@ -15,19 +19,34 @@ function estaAtivo(pathname: string, href: string): boolean {
   return pathname === href;
 }
 
+type EstadoDoMenu = 'fechado' | 'aberto' | 'fechando';
+
 export function SiteHeader() {
   const pathname = usePathname();
-  const [menuAberto, setMenuAberto] = useState(false);
+  const [menu, setMenu] = useState<EstadoDoMenu>('fechado');
   const botaoMenu = useRef<HTMLButtonElement>(null);
+  const botaoFechar = useRef<HTMLButtonElement>(null);
 
+  // Fecha com animação: o painel sai de cena antes de ser desmontado.
   const fechar = useCallback(() => {
-    setMenuAberto(false);
-    botaoMenu.current?.focus();
+    setMenu((m) => (m === 'aberto' ? 'fechando' : m));
   }, []);
 
-  // O menu é um diálogo: Esc fecha e a página atrás não rola.
   useEffect(() => {
-    if (!menuAberto) return undefined;
+    if (menu !== 'fechando') return undefined;
+    const t = window.setTimeout(() => {
+      setMenu('fechado');
+      botaoMenu.current?.focus();
+    }, DURACAO_DO_FECHAMENTO);
+    return () => {
+      window.clearTimeout(t);
+    };
+  }, [menu]);
+
+  // O menu é um diálogo: o foco entra nele, Esc fecha e a página atrás não rola.
+  useEffect(() => {
+    if (menu !== 'aberto') return undefined;
+    botaoFechar.current?.focus();
     const aoTeclar = (e: KeyboardEvent) => {
       if (e.key === 'Escape') fechar();
     };
@@ -38,10 +57,11 @@ export function SiteHeader() {
       document.removeEventListener('keydown', aoTeclar);
       document.body.style.overflow = overflowAnterior;
     };
-  }, [menuAberto, fechar]);
+  }, [menu, fechar]);
 
   return (
-    <header className={estilos.cabecalho}>
+    // Nome próprio na transição de página: o cabeçalho fica parado enquanto o conteúdo troca.
+    <header className={estilos.cabecalho} style={{ viewTransitionName: 'cabecalho-do-site' }}>
       <div className={estilos.faixa}>
         <Link href="/" className={estilos.marca}>
           {SITE.nome}
@@ -68,9 +88,9 @@ export function SiteHeader() {
           type="button"
           className={estilos.hamburguer}
           aria-label="Abrir menu"
-          aria-expanded={menuAberto}
+          aria-expanded={menu === 'aberto'}
           onClick={() => {
-            setMenuAberto(true);
+            setMenu('aberto');
           }}
         >
           <span />
@@ -78,54 +98,66 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {menuAberto && (
-        <>
-          <button
-            type="button"
-            className={estilos.fundo}
-            aria-label="Fechar menu"
-            onClick={fechar}
-          />
-          <div className={estilos.painel} role="dialog" aria-modal="true" aria-label="Menu">
-            <div className={estilos.fecharLinha}>
-              <button
-                type="button"
-                className={estilos.fechar}
-                aria-label="Fechar menu"
-                onClick={fechar}
-              >
-                ×
-              </button>
-            </div>
-
-            <nav className={estilos.painelLinks} aria-label="Navegação">
-              {NAV.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={estilos.painelLink}
+      {/*
+        Portal no <body>: o cabeçalho tem backdrop-filter, que prende qualquer filho
+        position:fixed dentro da caixa dele. Fora dele, o menu cobre a página inteira.
+      */}
+      {menu !== 'fechado' &&
+        createPortal(
+          <div className={cx(estilos.menu, menu === 'fechando' ? estilos.menuSaindo : '')}>
+            <button
+              type="button"
+              className={estilos.fundo}
+              aria-label="Fechar menu"
+              tabIndex={-1}
+              onClick={fechar}
+            />
+            <div className={estilos.painel} role="dialog" aria-modal="true" aria-label="Menu">
+              <div className={estilos.fecharLinha}>
+                <button
+                  ref={botaoFechar}
+                  type="button"
+                  className={estilos.fechar}
+                  aria-label="Fechar menu"
                   onClick={fechar}
-                  aria-current={estaAtivo(pathname, item.href) ? 'page' : undefined}
                 >
-                  {item.rotulo}
-                </Link>
-              ))}
-            </nav>
+                  ×
+                </button>
+              </div>
 
-            <div className={estilos.painelPe}>
-              <Link href="/contato" className={estilos.orcamento} onClick={fechar}>
-                Pedir um orçamento
-              </Link>
-              <div className={estilos.painelContato}>
-                <a href={linkDoWhatsApp()}>WhatsApp · {CONTATO.whatsapp.exibicao}</a>
-                <a href={`mailto:${CONTATO.email}`}>{CONTATO.email}</a>
-                <a href={CONTATO.instagram.url}>{CONTATO.instagram.usuario}</a>
-                <a href={CONTATO.facebook.url}>Facebook</a>
+              <nav className={estilos.painelLinks} aria-label="Navegação">
+                {NAV.map((item, i) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cx(
+                      estilos.painelLink,
+                      estaAtivo(pathname, item.href) ? estilos.linkAtivo : '',
+                    )}
+                    style={{ '--ordem': i } as React.CSSProperties}
+                    onClick={fechar}
+                    aria-current={estaAtivo(pathname, item.href) ? 'page' : undefined}
+                  >
+                    {item.rotulo}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className={estilos.painelPe}>
+                <Link href="/contato" className={estilos.orcamento} onClick={fechar}>
+                  Pedir um orçamento
+                </Link>
+                <div className={estilos.painelContato}>
+                  <a href={linkDoWhatsApp()}>WhatsApp · {CONTATO.whatsapp.exibicao}</a>
+                  <a href={`mailto:${CONTATO.email}`}>{CONTATO.email}</a>
+                  <a href={CONTATO.instagram.url}>{CONTATO.instagram.usuario}</a>
+                  <a href={CONTATO.facebook.url}>Facebook</a>
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      )}
+          </div>,
+          document.body,
+        )}
     </header>
   );
 }

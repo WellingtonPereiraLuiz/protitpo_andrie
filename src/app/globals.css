@@ -119,3 +119,69 @@ img {
 .pular-para-conteudo:focus {
   top: 8px;
 }
+
+/*
+ * Transição entre páginas (View Transitions API, via <ViewTransition> em (site)/template.tsx).
+ * A página que sai some rápido; a nova chega com calma, subindo um pouco. O cabeçalho é a
+ * âncora: não se mexe. Sem suporte do navegador, a troca simplesmente acontece sem animação.
+ */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.pagina-sai) {
+  animation: 160ms ease-in both pagina-some;
+}
+
+::view-transition-new(.pagina-entra) {
+  animation:
+    320ms ease-out 120ms both pagina-surge,
+    480ms var(--easing) both pagina-sobe;
+}
+
+::view-transition-group(cabecalho-do-site) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(cabecalho-do-site) {
+  display: none;
+}
+
+::view-transition-new(cabecalho-do-site) {
+  animation: none;
+}
+
+/* A capa do álbum viaja do cartão do portfólio até o topo da página do álbum. */
+::view-transition-group(.capa) {
+  animation-duration: 480ms;
+  animation-timing-function: var(--easing);
+}
+
+@keyframes pagina-some {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pagina-surge {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pagina-sobe {
+  from {
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

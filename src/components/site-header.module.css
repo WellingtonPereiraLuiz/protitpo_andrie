@@ -80,31 +80,56 @@
   background: var(--ink);
 }
 
-.fundo {
+.menu {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  z-index: 100;
+}
+
+.fundo {
+  position: absolute;
+  inset: 0;
   background: rgba(24, 23, 21, 0.55);
+  backdrop-filter: blur(2px);
   border: 0;
   padding: 0;
   cursor: pointer;
-  animation: aparecer 260ms ease-out;
+  animation: aparecer 300ms ease-out both;
 }
 
 .painel {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 41;
   width: min(86vw, 340px);
   background: var(--paper);
+  box-shadow: -18px 0 48px rgba(24, 23, 21, 0.22);
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 28px;
   overflow-y: auto;
-  animation: entrar 320ms var(--easing);
+  overscroll-behavior: contain;
+  animation: entrar 420ms var(--easing) both;
+}
+
+/* Os links chegam em cascata, logo depois do painel. */
+.painelLinks > a {
+  animation: subir 420ms var(--easing) both;
+  animation-delay: calc(120ms + var(--ordem, 0) * 40ms);
+}
+
+.painelPe {
+  animation: subir 420ms var(--easing) 420ms both;
+}
+
+.menuSaindo .fundo {
+  animation: sumir 260ms ease-in both;
+}
+
+.menuSaindo .painel {
+  animation: sair 260ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 @keyframes aparecer {
@@ -113,9 +138,28 @@
   }
 }
 
+@keyframes sumir {
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes entrar {
   from {
     transform: translateX(100%);
+  }
+}
+
+@keyframes sair {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
 }
 
@@ -180,4 +224,8 @@
   .hamburguer {
     display: none;
   }
+}
+
+.painelLink.linkAtivo {
+  color: var(--gold);
 }
