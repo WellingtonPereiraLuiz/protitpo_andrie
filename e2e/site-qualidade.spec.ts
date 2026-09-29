@@ -1,5 +1,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { PALETAS_PRONTAS } from '../src/content/tema';
+import { CHAVE_DO_CONTEUDO } from '../src/dados/local/conteudo-local';
+import { copiaDaSemente } from '../src/dados/semente';
 
 const PAGINAS = [
   '/',
@@ -47,3 +50,33 @@ for (const rota of ['/', '/portfolio', '/portfolio/marina-teo', '/sobre', '/blog
     expect(lcp.loading).not.toBe('lazy');
   });
 }
+
+// A paleta escura é a que mais arrisca contraste: o site inteiro tem que continuar legível.
+test('com a paleta Noite, a home e o portfólio seguem sem violações graves', async ({ page }) => {
+  const noite = PALETAS_PRONTAS.find((p) => p.nome === 'Noite');
+  if (!noite) throw new Error('paleta Noite ausente');
+  const conteudo = { ...copiaDaSemente(), tema: { nome: noite.nome, cores: { ...noite.cores } } };
+  await page.addInitScript(
+    ([chave, dado]) => {
+      if (chave && dado) localStorage.setItem(chave, dado);
+    },
+    [CHAVE_DO_CONTEUDO, JSON.stringify(conteudo)],
+  );
+  for (const rota of ['/', '/portfolio', '/agenda']) {
+    await page.goto(rota, { waitUntil: 'networkidle' });
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          getComputedStyle(document.documentElement).getPropertyValue('--paper').trim(),
+        ),
+      )
+      .toBe('#1c1b1a');
+    const resultado = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+    const graves = resultado.violations
+      .filter((v) => v.impact === 'serious' || v.impact === 'critical')
+      .map((v) => `${rota} ${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`);
+    expect(graves).toEqual([]);
+  }
+});

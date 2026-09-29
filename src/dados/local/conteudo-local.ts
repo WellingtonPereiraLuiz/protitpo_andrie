@@ -1,6 +1,8 @@
 import { ErroDeValidacao, type RepositorioDeConteudo } from '../repositorios';
 import { validarConteudo, type ConteudoDoSite } from '../schema';
 import { copiaDaSemente } from '../semente';
+import { ehOriginal, variaveisDoTema } from '../tema';
+import { CHAVE_DO_TEMA } from '../tema-antes-da-pintura';
 
 export const CHAVE_DO_CONTEUDO = 'ah-mvp:conteudo:v1';
 
@@ -67,6 +69,9 @@ export function criarConteudoLocal(
       }
       try {
         alvo.setItem(CHAVE_DO_CONTEUDO, JSON.stringify(r.conteudo));
+        // As variáveis prontas da paleta, para o script que roda antes da primeira pintura.
+        if (ehOriginal(r.conteudo.tema)) alvo.removeItem(CHAVE_DO_TEMA);
+        else alvo.setItem(CHAVE_DO_TEMA, JSON.stringify(variaveisDoTema(r.conteudo.tema.cores)));
       } catch {
         return Promise.reject(new Error('Não coube: o espaço deste navegador para o site acabou.'));
       }
@@ -77,6 +82,7 @@ export function criarConteudoLocal(
     restaurar() {
       try {
         armazenamento()?.removeItem(CHAVE_DO_CONTEUDO);
+        armazenamento()?.removeItem(CHAVE_DO_TEMA);
       } catch {
         // Nada salvo para apagar.
       }

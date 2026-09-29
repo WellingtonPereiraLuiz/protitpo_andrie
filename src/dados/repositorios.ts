@@ -48,8 +48,18 @@ export interface Autenticacao {
   sessaoAtiva(): boolean;
 }
 
+/** O administrador olhando o site pelo painel ("Ver o site"), com caminho de volta. */
+export interface ModoDeVisualizacao {
+  /** Começa a visualizar; `voltarPara` é a tela do painel de onde ele saiu. */
+  entrar(voltarPara: string): void;
+  sair(): void;
+  /** Para onde voltar, se esta aba está visualizando o site como administrador. */
+  voltarPara(): string | null;
+}
+
 export interface Servicos {
   readonly conteudo: RepositorioDeConteudo;
   readonly fotos: RepositorioDeFotos;
   readonly autenticacao: Autenticacao;
+  readonly visualizacao: ModoDeVisualizacao;
 }

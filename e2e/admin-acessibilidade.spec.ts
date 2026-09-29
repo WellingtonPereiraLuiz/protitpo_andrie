@@ -15,6 +15,7 @@ const TELAS = [
   { rota: '/admin/depoimentos', titulo: 'Depoimentos' },
   { rota: '/admin/servicos', titulo: 'Serviços' },
   { rota: '/admin/fotos', titulo: 'Fotos' },
+  { rota: '/admin/cores', titulo: 'Cores' },
   { rota: '/admin/agenda', titulo: 'Agenda' },
 ] as const;
 

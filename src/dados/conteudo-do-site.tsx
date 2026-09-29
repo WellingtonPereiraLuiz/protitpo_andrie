@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { ConteudoDoSite } from './schema';
 import { SEMENTE } from './semente';
+import { ehOriginal, variaveisDoTema } from './tema';
 
 /**
  * Os repositórios (e o Zod, que valida o que foi salvo) só são baixados depois que a
@@ -49,7 +50,25 @@ export function ConteudoProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  useAplicarTema(estado.conteudo);
+
   return <Contexto.Provider value={estado}>{children}</Contexto.Provider>;
+}
+
+/** Põe a paleta do documento nas variáveis CSS da página (ou volta às de globals.css). */
+function useAplicarTema(conteudo: ConteudoDoSite) {
+  const { tema } = conteudo;
+  useEffect(() => {
+    const raiz = document.documentElement.style;
+    const nomes = Object.keys(variaveisDoTema(tema.cores));
+    if (ehOriginal(tema)) {
+      for (const nome of nomes) raiz.removeProperty(nome);
+      return;
+    }
+    for (const [nome, valor] of Object.entries(variaveisDoTema(tema.cores))) {
+      raiz.setProperty(nome, valor);
+    }
+  }, [tema]);
 }
 
 /** Fornece um conteúdo já carregado (o painel usa o dele, que inclui as fotos enviadas). */

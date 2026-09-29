@@ -366,7 +366,7 @@ describe('arquitetura', () => {
     expect(infratores).toEqual([]);
   });
 
-  it('nenhuma tela acessa localStorage ou IndexedDB direto', () => {
+  it('nenhuma tela acessa localStorage, sessionStorage ou IndexedDB direto', () => {
     const raiz = join(process.cwd(), 'src');
     const infratores = arquivos(raiz)
       .filter((f) => /\.(ts|tsx)$/.test(f))

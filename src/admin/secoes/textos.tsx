@@ -3,6 +3,7 @@
 import { LIMITES } from '@/dados/schema';
 import { SEMENTE } from '@/dados/semente';
 import estilos from '../admin.module.css';
+import { VerNoSite } from '../ver-no-site';
 import { BarraDeSalvar, CampoArea, CampoTexto, RestaurarOriginal } from '../campos';
 import { useRascunho } from '../painel';
 
@@ -56,9 +57,9 @@ export function SecaoTextos() {
       />
 
       <div className={estilos.acoes}>
-        <a href="/" target="_blank" rel="noopener" className={estilos.botaoSecundario}>
-          Ver na home <span className="apenas-leitor">(abre em nova aba)</span>
-        </a>
+        <VerNoSite href="/" className={estilos.botaoSecundario}>
+          Ver na home
+        </VerNoSite>
         <RestaurarOriginal
           oque="o título e a frase de abertura da home"
           aoRestaurar={() => {

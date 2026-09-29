@@ -26,7 +26,8 @@ test('o painel tem layout próprio, sem o cabeçalho e o rodapé do site', async
   await expect(page.getByText('Demonstração', { exact: true })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Navegação principal' })).toHaveCount(0);
   await expect(page.getByRole('contentinfo')).toHaveCount(0);
-  await expect(page.getByRole('link', { name: /Ver o site/ })).toHaveAttribute('target', '_blank');
+  // Mesma aba, em modo de visualização (ver admin-visualizar-e-cores.spec.ts).
+  await expect(page.getByRole('link', { name: /Ver o site/ })).not.toHaveAttribute('target');
   await semRolagemHorizontal(page);
 });
 
@@ -47,16 +48,16 @@ test('cada seção tem endereço próprio e sobrevive ao F5', async ({ page }) =
 test('a navegação das seções nunca quebra em duas linhas', async ({ page }) => {
   await entrarNoPainel(page);
   const links = page.getByRole('navigation', { name: 'Seções do painel' }).getByRole('link');
-  await expect(links).toHaveCount(7);
+  await expect(links).toHaveCount(8);
   const topos = await links.evaluateAll((links) => links.map((l) => (l as HTMLElement).offsetTop));
-  expect(topos).toHaveLength(7);
+  expect(topos).toHaveLength(8);
   const largura = page.viewportSize()?.width ?? 0;
   if (largura < 880) {
     // Mobile: uma faixa só, todas as seções na mesma linha.
     expect(new Set(topos).size).toBe(1);
   } else {
     // Desktop: lista vertical, uma seção por linha.
-    expect(new Set(topos).size).toBe(7);
+    expect(new Set(topos).size).toBe(8);
   }
 });
 

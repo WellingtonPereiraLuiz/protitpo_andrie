@@ -69,7 +69,7 @@
 }
 
 .botaoSecundario:hover {
-  background: rgba(182, 130, 53, 0.1);
+  background: color-mix(in srgb, var(--gold-stroke) 10%, transparent);
 }
 
 .botaoClaro {

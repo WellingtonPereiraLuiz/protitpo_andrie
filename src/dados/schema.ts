@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { MEDIA } from '@/content/media';
+import { TEMA_ORIGINAL } from '@/content/tema';
+import { HEX } from '@/lib/cor';
 
 /**
  * O documento único com todo o conteúdo editável do site.
@@ -147,6 +149,21 @@ export const compromissoSchema = z.object({
   observacao: textoOpcional(LIMITES.resumo, 'A observação'),
 });
 
+const corSchema = z.string().regex(HEX, 'Use uma cor no formato #rrggbb.');
+
+export const temaSchema = z.object({
+  nome: texto(40, 'O nome da paleta'),
+  cores: z.object({
+    fundo: corSchema,
+    superficie: corSchema,
+    texto: corSchema,
+    textoSuave: corSchema,
+    apagado: corSchema,
+    destaque: corSchema,
+    contorno: corSchema,
+  }),
+});
+
 function repetidos(valores: readonly string[]): string[] {
   return valores.filter((v, i) => valores.indexOf(v) !== i);
 }
@@ -167,6 +184,11 @@ export const conteudoSchema = z
     servicos: z.array(servicoSchema),
     agenda: z.object({ compromissos: z.array(compromissoSchema) }),
     fotosEnviadas: z.record(z.string().startsWith(PREFIXO_DE_ENVIO), fotoEnviadaSchema),
+    // Documentos salvos antes da paleta existir não têm `tema`: valem as cores originais.
+    tema: temaSchema.default(() => ({
+      nome: TEMA_ORIGINAL.nome,
+      cores: { ...TEMA_ORIGINAL.cores },
+    })),
   })
   .superRefine((c, ctx) => {
     const unicos = (valores: string[], caminho: string, oque: string) => {

@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(244, 242, 239, 0.92);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
 }
@@ -60,7 +60,7 @@
 }
 
 .orcamento:hover {
-  background: rgba(182, 130, 53, 0.1);
+  background: color-mix(in srgb, var(--gold-stroke) 10%, transparent);
 }
 
 .hamburguer {

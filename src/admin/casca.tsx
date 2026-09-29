@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useSyncExternalStore } from 'react';
 import { criarServicos } from '@/dados/servicos';
 import estilos from './admin.module.css';
+import { VerNoSite } from './ver-no-site';
 import { PainelProvider, usePainel } from './painel';
 
 export const SECOES = [
@@ -14,6 +15,7 @@ export const SECOES = [
   { href: '/admin/depoimentos', rotulo: 'Depoimentos' },
   { href: '/admin/servicos', rotulo: 'Serviços' },
   { href: '/admin/fotos', rotulo: 'Fotos' },
+  { href: '/admin/cores', rotulo: 'Cores' },
   { href: '/admin/agenda', rotulo: 'Agenda' },
 ] as const;
 
@@ -55,9 +57,9 @@ function Cabecalho() {
     <header className={estilos.cabecalho}>
       <h1 className={estilos.titulo}>Painel do fotógrafo</h1>
       <div className={estilos.acoes}>
-        <a href="/" target="_blank" rel="noopener" className={estilos.botaoSecundario}>
-          Ver o site <span className="apenas-leitor">(abre em nova aba)</span>
-        </a>
+        <VerNoSite href="/" className={estilos.botaoSecundario}>
+          <span aria-hidden="true">↗</span> Ver o site
+        </VerNoSite>
         <button
           type="button"
           className={estilos.botaoPerigo}

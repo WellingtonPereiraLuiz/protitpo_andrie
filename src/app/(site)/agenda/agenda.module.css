@@ -22,11 +22,11 @@
 
 .amostraOcupada {
   background: var(--ocupado);
-  border-color: rgba(32, 31, 29, 0.18);
+  border-color: color-mix(in srgb, var(--ink) 18%, transparent);
 }
 
 .amostraFds {
-  border-color: rgba(182, 130, 53, 0.75);
+  border-color: color-mix(in srgb, var(--gold-stroke) 75%, transparent);
 }
 
 .meses {
@@ -87,7 +87,7 @@
   font-size: 12.5px;
   font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
-  border: 1px solid rgba(32, 31, 29, 0.18);
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
 }
 
 .diaVazio {
@@ -101,7 +101,7 @@
 }
 
 .diaFds {
-  border-color: rgba(182, 130, 53, 0.75);
+  border-color: color-mix(in srgb, var(--gold-stroke) 75%, transparent);
   color: var(--gold-deep);
 }
 

@@ -8,6 +8,7 @@ import { LIMITES, type BlocoDoPost, type PostDoSite } from '@/dados/schema';
 import { dataCurta, hojeISO } from '@/lib/calendario';
 import { cx } from '@/lib/cx';
 import estilos from '../admin.module.css';
+import { VerNoSite } from '../ver-no-site';
 import { BarraDeSalvar, CampoArea, CampoSelecao, CampoTexto } from '../campos';
 import { ItensEditaveis } from '../colecao';
 import { usePainel, useRascunho } from '../painel';
@@ -409,14 +410,9 @@ export function EditarPost({ slug }: { readonly slug: string }) {
         aoDescartar={r.descartar}
         extra={
           post.estado === 'publicado' ? (
-            <a
-              href={`/blog/${slug}`}
-              target="_blank"
-              rel="noopener"
-              className={estilos.botaoSecundario}
-            >
-              Ver post <span className="apenas-leitor">(abre em nova aba)</span>
-            </a>
+            <VerNoSite href={`/blog/${slug}`} className={estilos.botaoSecundario}>
+              Ver post
+            </VerNoSite>
           ) : undefined
         }
       />

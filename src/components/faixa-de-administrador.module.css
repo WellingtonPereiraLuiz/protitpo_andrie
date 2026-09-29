@@ -1,0 +1,63 @@
+.espaco {
+  height: 64px;
+}
+
+.faixa {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding: 10px 16px;
+  background: #201f1d;
+  color: #f7f4ef;
+  border-top: 3px solid #d9a441;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 -8px 24px rgba(24, 23, 21, 0.25);
+  /* Fixa em qualquer paleta: é do painel, não do site. */
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 3px;
+  background: #f7f4ef;
+  color: #201f1d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.voltar:hover {
+  background: #ffffff;
+}
+
+.texto {
+  flex: 1 1 200px;
+}
+
+.texto strong {
+  color: #f1d9ad;
+}
+
+.visitante {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(247, 244, 239, 0.45);
+  background: transparent;
+  color: #f7f4ef;
+  font: inherit;
+  cursor: pointer;
+}
+
+.visitante:hover {
+  background: rgba(247, 244, 239, 0.1);
+}

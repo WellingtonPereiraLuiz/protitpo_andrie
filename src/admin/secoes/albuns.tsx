@@ -14,6 +14,7 @@ import {
 import { CATEGORIAS_DE_ALBUM, LIMITES, type CategoriaDeAlbum } from '@/dados/schema';
 import { SEMENTE } from '@/dados/semente';
 import estilos from '../admin.module.css';
+import { VerNoSite } from '../ver-no-site';
 import {
   BarraDeSalvar,
   CampoSelecao,
@@ -342,14 +343,9 @@ export function EditarAlbum({ slug }: { readonly slug: string }) {
         sujo={r.sujo}
         aoDescartar={r.descartar}
         extra={
-          <a
-            href={`/portfolio/${slug}`}
-            target="_blank"
-            rel="noopener"
-            className={estilos.botaoSecundario}
-          >
-            Ver álbum <span className="apenas-leitor">(abre em nova aba)</span>
-          </a>
+          <VerNoSite href={`/portfolio/${slug}`} className={estilos.botaoSecundario}>
+            Ver álbum
+          </VerNoSite>
         }
       />
     </form>

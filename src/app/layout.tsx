@@ -33,7 +33,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${cormorant.variable} ${lora.variable}`}>
+    // A paleta escolhida no painel é aplicada no <html> antes da hidratação (style).
+    <html
+      lang="pt-BR"
+      className={`${cormorant.variable} ${lora.variable}`}
+      suppressHydrationWarning
+    >
       <body>{children}</body>
     </html>
   );

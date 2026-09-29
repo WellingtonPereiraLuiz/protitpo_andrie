@@ -4,6 +4,7 @@ import { DEPOIMENTOS, DESTAQUES, HERO } from '@/content/home';
 import { POSTS } from '@/content/posts';
 import { SERVICOS } from '@/content/servicos';
 import { SOBRE } from '@/content/sobre';
+import { TEMA_ORIGINAL } from '@/content/tema';
 import { gerarSlug } from '@/lib/slug';
 import type { ConteudoDoSite } from './schema';
 
@@ -46,6 +47,7 @@ export const SEMENTE: ConteudoDoSite = {
     })),
   },
   fotosEnviadas: {},
+  tema: { nome: TEMA_ORIGINAL.nome, cores: { ...TEMA_ORIGINAL.cores } },
 };
 
 /** Uma cópia nova da semente, que pode ser alterada sem tocar na original. */
