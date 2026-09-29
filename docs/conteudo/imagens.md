@@ -98,14 +98,14 @@ em português. Na Etapa 2 as fontes vêm pelo `next/font/google`, que baixa só 
 - Destaque 3 — `p1015.webp`
 - Ensaios — `p823.webp`
 - Foto do Sobre — `p1027.webp`
-## ⚠️ Substituições de imagem — PENDENTE DE DECISÃO
+## Substituições de imagem — decidido: nenhuma
 
 O briefing pedia: *"Se alguma imagem extraída for paisagem sem relação com casamento,
 troque por outra genérica de casamento, de banco de imagem livre, e anote a troca."*
 
-Revisei as 37 fotos uma a uma, em prancha de contato (`prancha-de-contato.png`, neste diretório). **Nenhuma tem relação com casamento.**
-Não é "alguma": é o acervo inteiro. O Lorem Picsum é uma coleção genérica de fotografia de
-stock, sem tema. O que está no site hoje:
+Revisei as 37 fotos uma a uma, em prancha de contato (`prancha-de-contato.png`, neste
+diretório). **Nenhuma tem relação com casamento.** Não é "alguma": é o acervo inteiro. O
+Lorem Picsum é uma coleção genérica de fotografia de stock, sem tema. O que está no site:
 
 | Foto | Conteúdo real | Onde aparece |
 |---|---|---|
@@ -126,16 +126,28 @@ stock, sem tema. O que está no site hoje:
 | `p1066` | Bebê no berço | Álbum "Esperando a Alice" — **a única plausível** |
 | demais 22 | Paisagens, mar, montanha, cidade, prédios | Galerias de álbum e post |
 
-Duas consequências que não dá para resolver sozinho:
+### Decisão (29/09/2026)
 
-1. **É o acervo inteiro, não um ajuste.** Substituir "as que não têm relação" significa
-   substituir 36 das 37.
-2. **Licença.** As atuais vêm do Unsplash via Picsum: uso comercial livre, sem atribuição.
-   Testei as fontes gratuitas alcançáveis desta máquina — o Pexels bloqueia sem chave (403)
-   e o Openverse responde, mas seu acervo de casamento em CC0 é fotografia de arquivo dos
-   anos 1920 e fotos amadoras de Flickr a no máximo 1024px. O que é CC BY exigiria uma
-   página de créditos no site do cliente.
+**Manter as 37 como estão, declaradas como provisórias.** Nenhuma substituição foi feita.
 
-**Aguardando decisão** — ver a pergunta levantada no relatório da Etapa 1. Os nomes de
-arquivo acima ficam estáveis: trocar as fotos depois é substituir arquivos em
-`public/media/`, sem tocar em código.
+Motivos:
+
+1. **Licença limpa.** Vêm do Unsplash via Picsum: uso comercial livre, sem exigência de
+   atribuição. Não criam obrigação nenhuma para o cliente.
+2. **As alternativas gratuitas alcançáveis são piores.** O Pexels bloqueia sem chave de API
+   (HTTP 403). O Openverse responde, mas seu acervo de casamento em CC0 é fotografia de
+   arquivo dos anos 1920 e material amador de Flickr a no máximo 1024px; o que tem
+   qualidade é CC BY, que obrigaria uma página de créditos no site do cliente.
+3. **Numa vitrine de fotógrafo, foto de casamento ruim pesa mais contra do que paisagem
+   obviamente provisória.** Uma paisagem lê como "placeholder"; um casamento amador a
+   1024px lê como "o trabalho dele é esse".
+
+### Consequências a respeitar na Etapa 2
+
+- O texto de `alt` **não pode descrever o que não está na foto**. Nada de
+  `alt="Noivos na cerimônia"` sobre a imagem de um pug. Os `alt` descrevem o **papel** da
+  imagem, não um conteúdo inventado — leitor de tela não é lugar de ficção.
+- O aviso de que as imagens são genéricas, que hoje vive no modal de onboarding do
+  protótipo, precisa sobreviver em algum lugar do produto.
+- Os nomes de arquivo são estáveis. Trocar as fotos depois é substituir arquivos em
+  `public/media/`, sem tocar em código.
