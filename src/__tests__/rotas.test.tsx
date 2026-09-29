@@ -1,5 +1,5 @@
 import { render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import AgendaPage from '@/app/(site)/agenda/page';
 import BlogPage from '@/app/(site)/blog/page';
 import PostPage, {
@@ -20,6 +20,10 @@ import { ALBUNS } from '@/content/albuns';
 import { POSTS } from '@/content/posts';
 
 describe('rotas estáticas', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('a home mostra o título e a chamada final', () => {
     render(<HomePage />);
     expect(screen.getByRole('heading', { level: 1, name: 'Andrei Heck' })).toBeInTheDocument();
@@ -56,13 +60,14 @@ describe('rotas estáticas', () => {
 
   it('agenda avisa que é só consulta visual', () => {
     render(<AgendaPage />);
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Datas livres de 2026' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Datas livres' })).toBeInTheDocument();
     expect(screen.getByText(/Este calendário é só uma consulta visual/)).toBeInTheDocument();
   });
 
   it('agenda risca o dia 7 de novembro e deixa o dia 8 livre', () => {
+    // A agenda começa no mês atual: com o relógio em 29/09/2026, mostra out-nov-dez.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-09-29T12:00:00'));
     render(<AgendaPage />);
     const novembro = within(screen.getByRole('region', { name: 'Novembro de 2026' }));
     const celula = (n: string) => novembro.getByText(n, { selector: 'span' });

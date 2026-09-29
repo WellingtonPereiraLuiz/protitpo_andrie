@@ -6,7 +6,14 @@ import { CHAVE_DO_CONTEUDO, criarConteudoLocal } from '@/dados/local/conteudo-lo
 import { ErroDeValidacao } from '@/dados/repositorios';
 import { validarConteudo, type ConteudoDoSite } from '@/dados/schema';
 import { copiaDaSemente, SEMENTE } from '@/dados/semente';
-import { dataCurta, dataLonga, dataPorExtenso, somarMeses } from '@/lib/calendario';
+import {
+  dataCurta,
+  dataLonga,
+  dataPorExtenso,
+  mesesDaAgenda,
+  nomeDoMes,
+  somarMeses,
+} from '@/lib/calendario';
 import { gerarSlug, slugUnico } from '@/lib/slug';
 
 function primeiro<T>(itens: readonly T[]): T {
@@ -221,6 +228,19 @@ describe('datas', () => {
     expect(dataCurta('2026-03-12')).toBe('12 mar 2026');
     expect(dataLonga('2026-02-27')).toBe('27 de fevereiro de 2026');
     expect(dataPorExtenso('2026-11-07')).toBe('sábado, 7 de novembro de 2026');
+  });
+
+  it('a agenda vai do mês atual até 12 meses à frente, nunca antes de outubro de 2026', () => {
+    const inicial = { ano: 2026, mes: 10 };
+    const setembro = mesesDaAgenda({ ano: 2026, mes: 9 }, inicial, 12).map(nomeDoMes);
+    expect(setembro[0]).toBe('Outubro de 2026');
+    expect(setembro.at(-1)).toBe('Setembro de 2027');
+    expect(setembro).toHaveLength(12);
+
+    const janeiro = mesesDaAgenda({ ano: 2027, mes: 1 }, inicial, 12).map(nomeDoMes);
+    expect(janeiro[0]).toBe('Janeiro de 2027');
+    expect(janeiro.at(-1)).toBe('Janeiro de 2028');
+    expect(janeiro).toHaveLength(13);
   });
 
   it('soma meses atravessando o ano', () => {

@@ -115,3 +115,31 @@
     gap: 24px;
   }
 }
+
+.navegacao {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.navBotao {
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 14px;
+  padding: 10px 16px;
+  min-height: 44px;
+  border-radius: var(--radius-pequeno);
+  border: 1px solid var(--line-strong);
+  background: var(--field);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.navBotao:hover {
+  background: var(--surface);
+}
+
+.navBotao:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

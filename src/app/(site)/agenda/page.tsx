@@ -7,7 +7,7 @@ import { cx } from '@/lib/cx';
 
 export const metadata: Metadata = {
   title: 'Agenda',
-  description: 'Datas livres de 2026 — consulta visual, nada é reservado pelo site.',
+  description: 'Datas livres dos próximos meses — consulta visual, nada é reservado pelo site.',
 };
 
 export default function AgendaPage() {
@@ -15,7 +15,7 @@ export default function AgendaPage() {
     <div className={ui.container}>
       <header className={ui.cabecalhoDePagina}>
         <span className={ui.kicker}>Agenda</span>
-        <h1 className={ui.titulo}>Datas livres de 2026</h1>
+        <h1 className={ui.titulo}>Datas livres</h1>
       </header>
 
       <div className={ui.aviso} style={{ marginTop: '28px', maxWidth: 'var(--leitura)' }}>

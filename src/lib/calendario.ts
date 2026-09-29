@@ -142,3 +142,23 @@ export function dataLonga(iso: string): string {
 export function dataPorExtenso(iso: string): string {
   return `${DIAS_DA_SEMANA_POR_EXTENSO[diaDaSemana(iso)] ?? ''}, ${dataLonga(iso)}`;
 }
+
+export function maiorMes(a: MesDoAno, b: MesDoAno): MesDoAno {
+  return compararMeses(a, b) >= 0 ? a : b;
+}
+
+/**
+ * Os meses que a agenda deixa ver: do mês atual (nunca antes de `inicial`) até
+ * `aFrente` meses depois do mês atual.
+ */
+export function mesesDaAgenda(
+  hoje: MesDoAno,
+  inicial: MesDoAno,
+  aFrente: number,
+): readonly MesDoAno[] {
+  const primeiro = maiorMes(inicial, hoje);
+  const ultimo = somarMeses(hoje, aFrente);
+  const meses: MesDoAno[] = [];
+  for (let m = primeiro; compararMeses(m, ultimo) <= 0; m = somarMeses(m, 1)) meses.push(m);
+  return meses;
+}
