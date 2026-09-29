@@ -68,7 +68,7 @@ dado fica guardado**, para que trocar o navegador por um banco seja uma fatia s�
 
 ### 4.2 Como evolui para um banco
 
-Três interfaces em `src/admin/dados/`, e **nenhuma tela conhece a implementação**:
+Três interfaces em `src/dados/` (o site público também as usa), e **nenhuma tela conhece a implementação**:
 
 | Interface               | MVP (agora)                                | Depois (banco)                         |
 | ----------------------- | ------------------------------------------ | -------------------------------------- |
