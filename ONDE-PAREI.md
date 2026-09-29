@@ -14,15 +14,15 @@ faltam as capturas e a medição do "depois". A Etapa 3 (spec do admin) não com
 
 ## Gates
 
-| Gate | Estado |
-|---|---|
-| Prettier | ✅ verde |
-| ESLint estrito (com tipos) | ✅ verde |
-| `tsc --noEmit` estrito | ✅ verde |
-| Vitest | ✅ verde — 39 testes, 2 arquivos |
-| `next build` | ✅ verde — 18 páginas geradas |
-| **Playwright** | ❌ **não escrito, não rodado** |
-| **Capturas + medição do "depois"** | ❌ **não feitas** |
+| Gate                               | Estado                           |
+| ---------------------------------- | -------------------------------- |
+| Prettier                           | ✅ verde                         |
+| ESLint estrito (com tipos)         | ✅ verde                         |
+| `tsc --noEmit` estrito             | ✅ verde                         |
+| Vitest                             | ✅ verde — 39 testes, 2 arquivos |
+| `next build`                       | ✅ verde — 18 páginas geradas    |
+| **Playwright**                     | ❌ **não escrito, não rodado**   |
+| **Capturas + medição do "depois"** | ❌ **não feitas**                |
 
 `npm run check` encadeia tudo, mas **vai falhar no `test:e2e`** porque ainda não existe
 nenhum teste em `e2e/`. Os outros cinco passam.
@@ -130,15 +130,15 @@ aviso de que o conteúdo entra pelo painel — em vez de inventar texto. **Confi
 
 ## Decisões de dependência que precisam ser conhecidas
 
-| Pacote | Versão | Por quê |
-|---|---|---|
-| next | 16.3.6 | estável atual |
-| react / react-dom | 19.3.0 | exigido pelo Next 16 |
-| typescript | **6.0.3** | **NÃO 7.0.2.** O `typescript-eslint` só aceita `>=4.8.4 <6.1.0`. Com TS 7 o gate de ESLint com tipos não roda. |
-| eslint | **9.39.5** | **NÃO 10.11.0.** O `eslint-config-next@16` embute um `eslint-plugin-react` que usa `context.getFilename()`, removido no ESLint 10 — o lint quebra com `TypeError`. |
-| vitest | 5.0.2 | estável atual |
-| @playwright/test | 1.63.0 | instalado, **ainda não configurado** |
-| prettier | 3.9.9 | estável atual |
+| Pacote            | Versão     | Por quê                                                                                                                                                            |
+| ----------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| next              | 16.3.6     | estável atual                                                                                                                                                      |
+| react / react-dom | 19.3.0     | exigido pelo Next 16                                                                                                                                               |
+| typescript        | **6.0.3**  | **NÃO 7.0.2.** O `typescript-eslint` só aceita `>=4.8.4 <6.1.0`. Com TS 7 o gate de ESLint com tipos não roda.                                                     |
+| eslint            | **9.39.5** | **NÃO 10.11.0.** O `eslint-config-next@16` embute um `eslint-plugin-react` que usa `context.getFilename()`, removido no ESLint 10 — o lint quebra com `TypeError`. |
+| vitest            | 5.0.2      | estável atual                                                                                                                                                      |
+| @playwright/test  | 1.63.0     | instalado, **ainda não configurado**                                                                                                                               |
+| prettier          | 3.9.9      | estável atual                                                                                                                                                      |
 
 As duas versões em negrito são rebaixamentos deliberados, cada um para manter um gate
 funcionando. Reverter qualquer uma quebra o gate correspondente.
