@@ -44,9 +44,13 @@ function Navegacao() {
   );
 }
 
+const AVISO_DE_RESTAURAR_TUDO =
+  'Restaurar TODO o conteúdo para o original? Isso apaga o que foi salvo neste navegador: ' +
+  'textos, álbuns, posts, depoimentos, serviços, fotos enviadas e agenda.';
+
 function Cabecalho() {
   const router = useRouter();
-  const { haPendencias } = usePainel();
+  const { haPendencias, restaurarTudo } = usePainel();
   return (
     <header className={estilos.cabecalho}>
       <h1 className={estilos.titulo}>Painel do fotógrafo</h1>
@@ -54,6 +58,15 @@ function Cabecalho() {
         <a href="/" target="_blank" rel="noopener" className={estilos.botaoSecundario}>
           Ver o site <span className="apenas-leitor">(abre em nova aba)</span>
         </a>
+        <button
+          type="button"
+          className={estilos.botaoPerigo}
+          onClick={() => {
+            if (window.confirm(AVISO_DE_RESTAURAR_TUDO)) void restaurarTudo();
+          }}
+        >
+          Restaurar tudo
+        </button>
         <button
           type="button"
           className={estilos.botaoDiscreto}
@@ -70,6 +83,16 @@ function Cabecalho() {
         </button>
       </div>
     </header>
+  );
+}
+
+function Conteudo({ children }: { children: React.ReactNode }) {
+  const { geracao } = usePainel();
+  return (
+    <main className={estilos.conteudo} id="conteudo" key={geracao}>
+      <ProblemaAoCarregar />
+      {children}
+    </main>
   );
 }
 
@@ -106,10 +129,7 @@ export function CascaDoPainel({ children }: { children: React.ReactNode }) {
       <Cabecalho />
       <div className={estilos.corpo}>
         <Navegacao />
-        <main className={estilos.conteudo} id="conteudo">
-          <ProblemaAoCarregar />
-          {children}
-        </main>
+        <Conteudo>{children}</Conteudo>
       </div>
     </PainelProvider>
   );

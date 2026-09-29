@@ -20,6 +20,8 @@ interface Painel {
   /** Algo salvo estava inválido e foi ignorado ao carregar. */
   readonly problema: string | null;
   readonly servicos: Servicos;
+  /** Muda a cada "Restaurar tudo": a casca usa como `key` para remontar os formulários. */
+  readonly geracao: number;
   /** Valida e grava o documento inteiro. Lança `ErroDeValidacao` ou `Error` com o motivo. */
   readonly salvar: (novo: ConteudoDoSite) => Promise<void>;
   /** Volta tudo à semente, inclusive fotos enviadas e agenda. */
@@ -39,6 +41,7 @@ export function PainelProvider({ children }: { children: React.ReactNode }) {
     problema: string | null;
   }>({ conteudo: SEMENTE, carregado: false, problema: null });
   const pendentes = useRef(new Set<string>());
+  const [geracao, setGeracao] = useState(0);
 
   useEffect(() => {
     let ativo = true;
@@ -79,12 +82,14 @@ export function PainelProvider({ children }: { children: React.ReactNode }) {
     const semente = await servicos.conteudo.restaurar();
     pendentes.current.clear();
     setEstado({ conteudo: semente, carregado: true, problema: null });
+    setGeracao((g) => g + 1);
   }, [servicos]);
 
   const valor = useMemo<Painel>(
     () => ({
       ...estado,
       servicos,
+      geracao,
       salvar,
       restaurarTudo,
       marcarPendente: (id, pendente) => {
@@ -93,7 +98,7 @@ export function PainelProvider({ children }: { children: React.ReactNode }) {
       },
       haPendencias: () => pendentes.current.size > 0,
     }),
-    [estado, servicos, salvar, restaurarTudo],
+    [estado, servicos, geracao, salvar, restaurarTudo],
   );
 
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;

@@ -353,3 +353,32 @@ export function BarraDeSalvar({
     </div>
   );
 }
+
+/**
+ * "Restaurar o original" de uma seção: pede confirmação dizendo o que será perdido.
+ * Quem chama decide o que é "o original" daquela seção e grava.
+ */
+export function RestaurarOriginal({
+  oque,
+  aoRestaurar,
+}: {
+  /** Ex.: "o título e a frase de abertura da home". */
+  readonly oque: string;
+  readonly aoRestaurar: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={estilos.botaoPerigo}
+      onClick={() => {
+        if (
+          window.confirm(`Restaurar ${oque} para o original? O que você salvou aqui será perdido.`)
+        ) {
+          aoRestaurar();
+        }
+      }}
+    >
+      Restaurar o original
+    </button>
+  );
+}
