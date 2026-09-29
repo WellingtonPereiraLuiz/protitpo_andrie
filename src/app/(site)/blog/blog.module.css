@@ -1,0 +1,67 @@
+.lista {
+  display: grid;
+  gap: 32px;
+  margin: 36px 0 24px;
+}
+
+.cartao {
+  display: grid;
+  gap: 18px;
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.moldura {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.moldura img {
+  object-fit: cover;
+  transition: scale 500ms var(--easing);
+}
+
+.cartao:hover .moldura img {
+  scale: 1.04;
+}
+
+.meta {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.titulo {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(22px, 2.6vw, 28px);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.resumo {
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+.ler {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@media (min-width: 880px) {
+  .cartao {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 36px;
+    align-items: center;
+  }
+}

@@ -1,0 +1,110 @@
+.container {
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.leitura {
+  max-width: var(--leitura);
+}
+
+.secao {
+  padding: 64px 0;
+}
+
+.secaoApertada {
+  padding: 40px 0;
+}
+
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.titulo {
+  font-size: clamp(30px, 5vw, 46px);
+}
+
+.tituloSecao {
+  font-size: clamp(25px, 3.4vw, 34px);
+}
+
+.intro {
+  color: var(--ink-soft);
+  margin-top: 18px;
+  max-width: var(--leitura);
+}
+
+.cabecalhoDePagina {
+  padding: 56px 0 8px;
+}
+
+.botao {
+  display: inline-block;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius-pequeno);
+  padding: 13px 26px;
+  cursor: pointer;
+  border: 1px solid var(--gold-stroke);
+  background: var(--gold);
+  color: var(--ink-on-dark);
+  transition: background 160ms var(--easing);
+}
+
+.botao:hover {
+  background: var(--gold-deep);
+}
+
+.botaoSecundario {
+  background: transparent;
+  color: var(--gold);
+}
+
+.botaoSecundario:hover {
+  background: rgba(182, 130, 53, 0.1);
+}
+
+.botaoClaro {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+}
+
+.botaoClaro:hover {
+  background: var(--ink-on-dark);
+}
+
+.aviso {
+  background: var(--surface-warm);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold-stroke);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.linha {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+@media (min-width: 880px) {
+  .secao {
+    padding: 88px 0;
+  }
+
+  .cabecalhoDePagina {
+    padding: 80px 0 8px;
+  }
+}

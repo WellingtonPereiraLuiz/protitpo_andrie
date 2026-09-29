@@ -1,0 +1,96 @@
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 32px 0 36px;
+}
+
+.pilula {
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-radius: var(--radius-pequeno);
+  padding: 9px 18px;
+  border: 1px solid var(--line-strong);
+  color: var(--muted-strong);
+}
+
+.pilulaAtiva {
+  border-color: rgba(182, 130, 53, 0.6);
+  background: rgba(182, 130, 53, 0.14);
+  color: var(--gold);
+}
+
+.grade {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+  padding-bottom: 24px;
+}
+
+.cartao {
+  text-decoration: none;
+  color: inherit;
+}
+
+.moldura {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.moldura img {
+  object-fit: cover;
+  transition: scale 500ms var(--easing);
+}
+
+.cartao:hover .moldura img {
+  scale: 1.04;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.meta {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.nome {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 23px;
+}
+
+.resumo {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.total {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+@media (min-width: 620px) {
+  .grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 880px) {
+  .grade {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
