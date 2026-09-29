@@ -13,7 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Leia `ONDE-PAREI.md` antes de tudo: estado, pendências e o que não foi verificado.
 
 - **Gates:** `npm run check` (Prettier, ESLint com tipos, `tsc`, Vitest, `next build`,
-  Playwright com axe). Só commite com ele verde. Ele usa a porta 3100 e falha se ela
+  Playwright com axe, em Chromium 390/1440 e Firefox 1440). Só commite com ele verde. Ele usa a porta 3100 e falha se ela
   estiver ocupada — de propósito, para nunca testar contra um servidor velho.
 - **Versões travadas de propósito:** `typescript` 6.0.3 (o `typescript-eslint` não aceita
   7.x) e `eslint` 9.x (o `eslint-config-next@16` quebra no 10). Instale com `npm ci`.

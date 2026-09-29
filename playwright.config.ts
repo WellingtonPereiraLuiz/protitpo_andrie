@@ -18,6 +18,14 @@ export default defineConfig({
   projects: [
     { name: 'mobile-390', use: { viewport: { width: 390, height: 844 } } },
     { name: 'desktop-1440', use: { viewport: { width: 1440, height: 900 } } },
+    // O dono do site usa o Zen (motor do Firefox): o painel e o site rodam nele também.
+    {
+      name: 'firefox-1440',
+      use: { browserName: 'firefox', viewport: { width: 1440, height: 900 } },
+      // Mais lento que o Chromium, sobretudo com a máquina carregada: mais tempo, mesmas asserções.
+      timeout: 60_000,
+      expect: { timeout: 10_000 },
+    },
   ],
   webServer: {
     command: `npx next start -p ${String(PORTA)}`,

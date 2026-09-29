@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useSyncExternalStore } from 'react';
 import { criarServicos } from '@/dados/servicos';
 import estilos from './admin.module.css';
+import { atravessarFronteira } from './fronteira';
 import { VerNoSite } from './ver-no-site';
 import { PainelProvider, usePainel } from './painel';
 
@@ -51,7 +52,6 @@ const AVISO_DE_RESTAURAR_TUDO =
   'textos, álbuns, posts, depoimentos, serviços, fotos enviadas e agenda.';
 
 function Cabecalho() {
-  const router = useRouter();
   const { haPendencias, restaurarTudo } = usePainel();
   return (
     <header className={estilos.cabecalho}>
@@ -77,7 +77,7 @@ function Cabecalho() {
             void criarServicos()
               .autenticacao.sair()
               .then(() => {
-                router.replace('/admin/entrar');
+                atravessarFronteira('/admin/entrar');
               });
           }}
         >
@@ -112,7 +112,6 @@ const semAssinatura = () => () => undefined;
 
 /** Sem sessão, qualquer rota do painel vai para o login. */
 export function CascaDoPainel({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   // No servidor a sessão é desconhecida (`null`): o painel só aparece no navegador.
   const sessao = useSyncExternalStore(
     semAssinatura,
@@ -121,8 +120,8 @@ export function CascaDoPainel({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
-    if (sessao === false) router.replace('/admin/entrar');
-  }, [sessao, router]);
+    if (sessao === false) atravessarFronteira('/admin/entrar');
+  }, [sessao]);
 
   if (sessao !== true) return null;
 

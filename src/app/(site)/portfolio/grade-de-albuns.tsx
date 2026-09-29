@@ -26,8 +26,8 @@ export function GradeDeAlbuns({ ativa }: { readonly ativa: CategoriaDeAlbum }) {
                 id={album.capa}
                 alt={`Capa do álbum ${album.nome}`}
                 preencher
-                // A primeira capa é a maior imagem da primeira dobra (LCP): não pode ser lazy.
-                priority={i === 0}
+                // A primeira linha (até 3 capas em 1440px) está na primeira dobra: nada de lazy.
+                priority={i < 3}
                 sizes="(min-width: 880px) 33vw, (min-width: 620px) 50vw, 100vw"
               />
             </div>

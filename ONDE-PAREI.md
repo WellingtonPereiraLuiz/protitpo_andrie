@@ -129,7 +129,7 @@ O desvio de paleta está registrado em `docs/conteudo/design-tokens.md`. As capt
 cd ~/Documents/projetos/protitpo_andrie   # ou ~/Documentos, conforme a máquina
 git checkout feat/next-migration
 npm ci                                     # não npm install
-npx playwright install chromium
+npx playwright install chromium firefox
 npm run dev                                # http://localhost:3000 — painel em /admin
 npm run check                              # todos os gates (usa a porta 3100)
 ```

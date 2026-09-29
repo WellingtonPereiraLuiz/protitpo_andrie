@@ -1,22 +1,30 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { criarServicos } from '@/dados/servicos';
 import estilos from './admin.module.css';
+import { atravessarFronteira } from './fronteira';
 import { CampoTexto } from './campos';
 
+const semAssinatura = () => () => undefined;
+
 export function Login() {
-  const router = useRouter();
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState<string | null>(null);
   const [entrando, setEntrando] = useState(false);
+  // Antes da hidratação o formulário não tem o onSubmit: um clique nessa hora enviaria o
+  // formulário pelo navegador e só recarregaria a página. O botão espera o React assumir.
+  const pronto = useSyncExternalStore(
+    semAssinatura,
+    () => true,
+    () => false,
+  );
 
   // Quem já entrou não precisa ver o login de novo.
   useEffect(() => {
-    if (criarServicos().autenticacao.sessaoAtiva()) router.replace('/admin/textos');
-  }, [router]);
+    if (criarServicos().autenticacao.sessaoAtiva()) atravessarFronteira('/admin/textos');
+  }, []);
 
   return (
     <main className={estilos.login}>
@@ -30,7 +38,7 @@ export function Login() {
             .autenticacao.entrar(usuario, senha)
             .then((ok) => {
               if (ok) {
-                router.replace('/admin/textos');
+                atravessarFronteira('/admin/textos');
               } else {
                 setErro('Usuário ou senha incorretos.');
                 setEntrando(false);
@@ -63,7 +71,7 @@ export function Login() {
           autoComplete="current-password"
         />
 
-        <button type="submit" className={estilos.botao} disabled={entrando}>
+        <button type="submit" className={estilos.botao} disabled={!pronto || entrando}>
           Entrar
         </button>
       </form>
