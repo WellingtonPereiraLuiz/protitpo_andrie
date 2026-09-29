@@ -23,8 +23,8 @@ export type LinkDoPost =
 export interface Post {
   readonly slug: string;
   readonly titulo: string;
+  /** AAAA-MM-DD. O texto "12 mar 2026" é formatado na hora de mostrar. */
   readonly data: string;
-  readonly dataLonga: string;
   readonly categoria: string;
   readonly resumo: string;
   readonly capa: MediaId;
@@ -37,8 +37,7 @@ export const POSTS: readonly Post[] = [
   {
     slug: 'casamento-no-sitio-da-familia',
     titulo: 'Casamento no sítio da família: a luz das cinco da tarde',
-    data: '12 mar 2026',
-    dataLonga: '12 de março de 2026',
+    data: '2026-03-12',
     categoria: 'Casamentos',
     resumo: 'Por que eu sempre peço quinze minutos com o casal antes do sol sumir.',
     capa: 'post-capa',
@@ -69,8 +68,7 @@ export const POSTS: readonly Post[] = [
   {
     slug: 'como-escolher-o-horario-da-cerimonia',
     titulo: 'Como escolher o horário da cerimônia',
-    data: '27 fev 2026',
-    dataLonga: '27 de fevereiro de 2026',
+    data: '2026-02-27',
     categoria: 'Dicas',
     resumo: 'Um guia curto para não acabar com as fotos sob o sol de meio-dia.',
     capa: 'p1039',
@@ -80,8 +78,7 @@ export const POSTS: readonly Post[] = [
   {
     slug: 'ensaio-de-gestante-em-casa',
     titulo: 'Ensaio de gestante em casa',
-    data: '14 jan 2026',
-    dataLonga: '14 de janeiro de 2026',
+    data: '2026-01-14',
     categoria: 'Ensaios',
     resumo: 'A casa de vocês conta mais da história do que qualquer cenário.',
     capa: 'p823',

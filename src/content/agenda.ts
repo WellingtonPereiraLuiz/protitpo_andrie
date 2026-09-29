@@ -1,61 +1,28 @@
-export interface Mes {
-  readonly nome: string;
-  readonly ano: number;
-  /** Dias já comprometidos — exemplo fictício. */
-  readonly ocupados: readonly number[];
-  /** Dia da semana em que o mês começa: 0 = domingo. */
-  readonly primeiroDiaDaSemana: number;
-  readonly totalDeDias: number;
+import type { TipoDeCompromisso } from '@/dados/schema';
+
+/** Primeiro mês que a agenda mostra, mesmo que o relógio de quem visita esteja antes dele. */
+export const MES_INICIAL_DA_AGENDA = { ano: 2026, mes: 10 } as const;
+
+/** Quantos meses depois do mês atual a agenda deixa navegar. */
+export const MESES_A_FRENTE = 12;
+
+export interface CompromissoDeExemplo {
+  readonly data: string;
+  readonly titulo: string;
+  readonly tipo: TipoDeCompromisso;
 }
 
-export const MESES: readonly Mes[] = [
-  {
-    nome: 'Outubro',
-    ano: 2026,
-    ocupados: [3, 10, 17, 24],
-    primeiroDiaDaSemana: 4,
-    totalDeDias: 31,
-  },
-  { nome: 'Novembro', ano: 2026, ocupados: [7, 14, 21], primeiroDiaDaSemana: 0, totalDeDias: 30 },
-  {
-    nome: 'Dezembro',
-    ano: 2026,
-    ocupados: [5, 12, 19, 31],
-    primeiroDiaDaSemana: 2,
-    totalDeDias: 31,
-  },
+/** Datas já comprometidas — exemplo fictício, as mesmas do protótipo. */
+export const COMPROMISSOS_DE_EXEMPLO: readonly CompromissoDeExemplo[] = [
+  { data: '2026-10-03', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-10-10', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-10-17', titulo: 'Ensaio (exemplo)', tipo: 'Ensaio' },
+  { data: '2026-10-24', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-11-07', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-11-14', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-11-21', titulo: 'Ensaio (exemplo)', tipo: 'Ensaio' },
+  { data: '2026-12-05', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-12-12', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-12-19', titulo: 'Casamento (exemplo)', tipo: 'Casamento' },
+  { data: '2026-12-31', titulo: 'Réveillon (exemplo)', tipo: 'Outro' },
 ];
-
-export const DIAS_DA_SEMANA = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'] as const;
-
-export type Dia =
-  | { readonly tipo: 'vazio'; readonly chave: string }
-  | {
-      readonly tipo: 'dia';
-      readonly chave: string;
-      readonly numero: number;
-      readonly ocupado: boolean;
-      readonly fimDeSemana: boolean;
-    };
-
-export function diasDoMes(mes: Mes): readonly Dia[] {
-  const dias: Dia[] = [];
-  for (let i = 0; i < mes.primeiroDiaDaSemana; i++) {
-    dias.push({ tipo: 'vazio', chave: `${mes.nome}-vazio-${String(i)}` });
-  }
-  for (let d = 1; d <= mes.totalDeDias; d++) {
-    const diaDaSemana = (mes.primeiroDiaDaSemana + d - 1) % 7;
-    dias.push({
-      tipo: 'dia',
-      chave: `${mes.nome}-${String(d)}`,
-      numero: d,
-      ocupado: mes.ocupados.includes(d),
-      fimDeSemana: diaDaSemana === 0 || diaDaSemana === 6,
-    });
-  }
-  return dias;
-}
-
-export function datasLivres(mes: Mes): number {
-  return mes.totalDeDias - mes.ocupados.length;
-}

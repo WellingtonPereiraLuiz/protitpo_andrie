@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
 import { POSTS } from '@/content/posts';
+import { dataCurta } from '@/lib/calendario';
 import estilos from './blog.module.css';
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default function BlogPage() {
             </div>
             <div>
               <span className={estilos.meta}>
-                {post.data} · {post.categoria}
+                {dataCurta(post.data)} · {post.categoria}
               </span>
               <span className={estilos.titulo}>{post.titulo}</span>
               <p className={estilos.resumo}>{post.resumo}</p>

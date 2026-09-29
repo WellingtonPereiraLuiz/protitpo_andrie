@@ -1,7 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import ui from '@/components/ui.module.css';
-import { datasLivres, DIAS_DA_SEMANA, diasDoMes, MESES } from '@/content/agenda';
+import { MES_INICIAL_DA_AGENDA } from '@/content/agenda';
+import { SEMENTE } from '@/dados/semente';
+import {
+  celulasDoMes,
+  DIAS_DA_SEMANA,
+  diasNoMes,
+  NOMES_DOS_MESES,
+  nomeDoMes,
+  somarMeses,
+} from '@/lib/calendario';
 import estilos from './agenda.module.css';
 import { cx } from '@/lib/cx';
 
@@ -9,6 +18,9 @@ export const metadata: Metadata = {
   title: 'Agenda',
   description: 'Datas livres de 2026 — consulta visual, nada é reservado pelo site.',
 };
+
+const MESES = [0, 1, 2].map((n) => somarMeses(MES_INICIAL_DA_AGENDA, n));
+const OCUPADOS = new Set(SEMENTE.agenda.compromissos.map((c) => c.data));
 
 export default function AgendaPage() {
   return (
@@ -36,46 +48,52 @@ export default function AgendaPage() {
       </div>
 
       <div className={estilos.meses}>
-        {MESES.map((mes) => (
-          <section
-            key={mes.nome}
-            className={estilos.mes}
-            aria-label={`${mes.nome} de ${String(mes.ano)}`}
-          >
-            <div className={estilos.mesTopo}>
-              <span className={estilos.mesNome}>
-                {mes.nome} {mes.ano}
-              </span>
-              <span className={estilos.mesResumo}>{datasLivres(mes)} datas livres</span>
-            </div>
+        {MESES.map((mes) => {
+          const celulas = celulasDoMes(mes);
+          const ocupadosNoMes = celulas.filter(
+            (c) => c.tipo === 'dia' && OCUPADOS.has(c.data),
+          ).length;
+          return (
+            <section key={nomeDoMes(mes)} className={estilos.mes} aria-label={nomeDoMes(mes)}>
+              <div className={estilos.mesTopo}>
+                <span className={estilos.mesNome}>
+                  {NOMES_DOS_MESES[mes.mes - 1]} {mes.ano}
+                </span>
+                <span className={estilos.mesResumo}>
+                  {diasNoMes(mes) - ocupadosNoMes} datas livres
+                </span>
+              </div>
 
-            <div className={estilos.semana} aria-hidden="true">
-              {DIAS_DA_SEMANA.map((d, i) => (
-                <span key={i}>{d}</span>
-              ))}
-            </div>
+              <div className={estilos.semana} aria-hidden="true">
+                {DIAS_DA_SEMANA.map((d, i) => (
+                  <span key={i}>{d}</span>
+                ))}
+              </div>
 
-            <div className={estilos.dias}>
-              {diasDoMes(mes).map((dia) =>
-                dia.tipo === 'vazio' ? (
-                  <span key={dia.chave} className={cx(estilos.dia, estilos.diaVazio)} />
-                ) : (
-                  <span
-                    key={dia.chave}
-                    className={cx(
-                      estilos.dia,
-                      dia.ocupado ? estilos.diaOcupado : '',
-                      !dia.ocupado && dia.fimDeSemana ? estilos.diaFds : '',
-                    )}
-                  >
-                    {dia.numero}
-                    {dia.ocupado && <span className="apenas-leitor"> — ocupada</span>}
-                  </span>
-                ),
-              )}
-            </div>
-          </section>
-        ))}
+              <div className={estilos.dias}>
+                {celulas.map((dia) => {
+                  if (dia.tipo === 'vazio') {
+                    return <span key={dia.chave} className={cx(estilos.dia, estilos.diaVazio)} />;
+                  }
+                  const ocupado = OCUPADOS.has(dia.data);
+                  return (
+                    <span
+                      key={dia.chave}
+                      className={cx(
+                        estilos.dia,
+                        ocupado ? estilos.diaOcupado : '',
+                        !ocupado && dia.fimDeSemana ? estilos.diaFds : '',
+                      )}
+                    >
+                      {dia.numero}
+                      {ocupado && <span className="apenas-leitor"> — ocupada</span>}
+                    </span>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
       </div>
 
       <div className={estilos.fecho}>

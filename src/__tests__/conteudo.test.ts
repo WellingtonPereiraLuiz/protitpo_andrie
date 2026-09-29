@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { ALBUNS, fotosDoAlbum } from '@/content/albuns';
-import { datasLivres, diasDoMes, MESES } from '@/content/agenda';
 import { DESTAQUES } from '@/content/home';
 import { MEDIA, type MediaId } from '@/content/media';
 import { POSTS } from '@/content/posts';
 import { SERVICOS } from '@/content/servicos';
 import { SOBRE } from '@/content/sobre';
 import { CONTATO } from '@/content/site';
+import { SEMENTE } from '@/dados/semente';
+import { celulasDoMes, diasNoMes, type MesDoAno } from '@/lib/calendario';
 import { cx } from '@/lib/cx';
 import { linkDoWhatsApp, montarMensagem } from '@/lib/whatsapp';
 
@@ -87,62 +88,60 @@ describe('álbuns', () => {
 
 describe('agenda', () => {
   // Valores esperados escritos à mão, a partir do calendário real de 2026 —
-  // nunca derivados de src/content/agenda.ts, senão o teste compara o dado com ele mesmo.
+  // nunca derivados dos dados de exemplo, senão o teste compara o dado com ele mesmo.
 
-  function mes(nome: string) {
-    const encontrado = MESES.find((m) => m.nome === nome);
-    if (!encontrado) throw new Error(`mês ausente: ${nome}`);
-    return encontrado;
-  }
+  const OUTUBRO: MesDoAno = { ano: 2026, mes: 10 };
+  const NOVEMBRO: MesDoAno = { ano: 2026, mes: 11 };
+  const DEZEMBRO: MesDoAno = { ano: 2026, mes: 12 };
+  const ocupadas = new Set(SEMENTE.agenda.compromissos.map((c) => c.data));
 
-  function dia(nomeDoMes: string, numero: number) {
-    const encontrado = diasDoMes(mes(nomeDoMes)).find(
-      (d) => d.tipo === 'dia' && d.numero === numero,
-    );
+  function dia(m: MesDoAno, numero: number) {
+    const encontrado = celulasDoMes(m).find((c) => c.tipo === 'dia' && c.numero === numero);
     if (encontrado?.tipo !== 'dia') throw new Error(`dia ausente: ${String(numero)}`);
     return encontrado;
   }
 
-  function ocupados(nomeDoMes: string) {
-    return diasDoMes(mes(nomeDoMes)).flatMap((d) =>
-      d.tipo === 'dia' && d.ocupado ? [d.numero] : [],
+  function ocupados(m: MesDoAno) {
+    return celulasDoMes(m).flatMap((c) =>
+      c.tipo === 'dia' && ocupadas.has(c.data) ? [c.numero] : [],
     );
   }
 
-  it('mostra outubro, novembro e dezembro de 2026, nessa ordem', () => {
-    expect(MESES.map((m) => `${m.nome}/${String(m.ano)}`)).toEqual([
-      'Outubro/2026',
-      'Novembro/2026',
-      'Dezembro/2026',
-    ]);
-  });
-
   it('a grade começa no dia da semana certo do calendário real', () => {
     // 01/10/2026 é quinta; 01/11/2026 é domingo; 01/12/2026 é terça.
-    expect(diasDoMes(mes('Outubro'))).toHaveLength(4 + 31);
-    expect(diasDoMes(mes('Novembro'))).toHaveLength(0 + 30);
-    expect(diasDoMes(mes('Dezembro'))).toHaveLength(2 + 31);
-    expect(diasDoMes(mes('Outubro'))[4]).toMatchObject({ tipo: 'dia', numero: 1 });
-    expect(diasDoMes(mes('Novembro'))[0]).toMatchObject({ tipo: 'dia', numero: 1 });
-    expect(diasDoMes(mes('Dezembro'))[2]).toMatchObject({ tipo: 'dia', numero: 1 });
+    expect(celulasDoMes(OUTUBRO)).toHaveLength(4 + 31);
+    expect(celulasDoMes(NOVEMBRO)).toHaveLength(0 + 30);
+    expect(celulasDoMes(DEZEMBRO)).toHaveLength(2 + 31);
+    expect(celulasDoMes(OUTUBRO)[4]).toMatchObject({ tipo: 'dia', numero: 1, data: '2026-10-01' });
+    expect(celulasDoMes(NOVEMBRO)[0]).toMatchObject({ tipo: 'dia', numero: 1, data: '2026-11-01' });
+    expect(celulasDoMes(DEZEMBRO)[2]).toMatchObject({ tipo: 'dia', numero: 1, data: '2026-12-01' });
   });
 
-  it('em novembro de 2026 o dia 7 está riscado e o dia 8 não', () => {
-    expect(dia('Novembro', 7)).toMatchObject({ ocupado: true, fimDeSemana: true }); // sábado
-    expect(dia('Novembro', 8)).toMatchObject({ ocupado: false, fimDeSemana: true }); // domingo
-    expect(dia('Novembro', 9)).toMatchObject({ ocupado: false, fimDeSemana: false }); // segunda
+  it('conhece os meses de 28, 29, 30 e 31 dias', () => {
+    expect(diasNoMes({ ano: 2026, mes: 2 })).toBe(28);
+    expect(diasNoMes({ ano: 2028, mes: 2 })).toBe(29);
+    expect(diasNoMes(NOVEMBRO)).toBe(30);
+    expect(diasNoMes(DEZEMBRO)).toBe(31);
+  });
+
+  it('em novembro de 2026 o dia 7 está ocupado e o dia 8 não', () => {
+    expect(dia(NOVEMBRO, 7)).toMatchObject({ data: '2026-11-07', fimDeSemana: true }); // sábado
+    expect(ocupadas.has('2026-11-07')).toBe(true);
+    expect(dia(NOVEMBRO, 8)).toMatchObject({ data: '2026-11-08', fimDeSemana: true }); // domingo
+    expect(ocupadas.has('2026-11-08')).toBe(false);
+    expect(dia(NOVEMBRO, 9)).toMatchObject({ fimDeSemana: false }); // segunda
   });
 
   it('marca como ocupados exatamente os dias esperados de cada mês', () => {
-    expect(ocupados('Outubro')).toEqual([3, 10, 17, 24]);
-    expect(ocupados('Novembro')).toEqual([7, 14, 21]);
-    expect(ocupados('Dezembro')).toEqual([5, 12, 19, 31]);
+    expect(ocupados(OUTUBRO)).toEqual([3, 10, 17, 24]);
+    expect(ocupados(NOVEMBRO)).toEqual([7, 14, 21]);
+    expect(ocupados(DEZEMBRO)).toEqual([5, 12, 19, 31]);
   });
 
   it('conta 27 datas livres em cada mês', () => {
-    expect(datasLivres(mes('Outubro'))).toBe(27);
-    expect(datasLivres(mes('Novembro'))).toBe(27);
-    expect(datasLivres(mes('Dezembro'))).toBe(27);
+    expect(diasNoMes(OUTUBRO) - ocupados(OUTUBRO).length).toBe(27);
+    expect(diasNoMes(NOVEMBRO) - ocupados(NOVEMBRO).length).toBe(27);
+    expect(diasNoMes(DEZEMBRO) - ocupados(DEZEMBRO).length).toBe(27);
   });
 });
 

@@ -5,6 +5,7 @@ import { Foto } from '@/components/foto';
 import ui from '@/components/ui.module.css';
 import { acharPost, POSTS, type Bloco } from '@/content/posts';
 import estilos from './post.module.css';
+import { dataLonga } from '@/lib/calendario';
 import { cx } from '@/lib/cx';
 
 interface Props {
@@ -96,7 +97,7 @@ export default async function PostPage({ params }: Props) {
         </Link>
 
         <span className={estilos.meta}>
-          {post.dataLonga} · {post.categoria}
+          {dataLonga(post.data)} · {post.categoria}
         </span>
         <h1 className={estilos.titulo}>{post.titulo}</h1>
 
