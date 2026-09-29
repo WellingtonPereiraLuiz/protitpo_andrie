@@ -67,6 +67,42 @@ test('trocar de página usa transição animada (View Transitions)', async ({ pa
     .toBeGreaterThan(0);
 });
 
+for (const [origem, rotulo, destino, nome] of [
+  ['/portfolio', /Marina & Téo/, '/portfolio/marina-teo', 'capa-marina-teo'],
+  [
+    '/blog',
+    /Como escolher o horário/,
+    '/blog/como-escolher-o-horario-da-cerimonia',
+    'capa-post-como-escolher-o-horario-da-cerimonia',
+  ],
+] as const) {
+  test(`abrir ${destino} leva a capa junto, como elemento compartilhado`, async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName !== 'chromium', 'a inspeção usa document.startViewTransition');
+    // Registra os view-transition-name que estão no DOM quando a transição começa.
+    await page.addInitScript(() => {
+      const original = document.startViewTransition.bind(document);
+      const w = window as unknown as { nomes: string[] };
+      w.nomes = [];
+      document.startViewTransition = ((...args: Parameters<typeof original>) => {
+        for (const el of document.querySelectorAll<HTMLElement>('*')) {
+          const n = getComputedStyle(el).viewTransitionName;
+          if (n && n !== 'none') w.nomes.push(n);
+        }
+        return original(...args);
+      }) as typeof document.startViewTransition;
+    });
+    await page.goto(origem);
+    await page.getByRole('link', { name: rotulo }).first().click();
+    await expect(page).toHaveURL(destino);
+    await expect
+      .poll(() => page.evaluate(() => (window as unknown as { nomes: string[] }).nomes))
+      .toContain(nome);
+  });
+}
+
 test('o rodapé é enxuto: marca, contato e créditos', async ({ page }) => {
   await page.goto('/');
   const rodape = page.getByRole('contentinfo');

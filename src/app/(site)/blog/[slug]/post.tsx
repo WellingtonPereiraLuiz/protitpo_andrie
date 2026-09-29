@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ViewTransition } from 'react';
 import { FotoDoConteudo } from '@/components/foto-do-conteudo';
 import { Carregando, NaoEncontrado } from '@/components/nao-encontrado';
 import ui from '@/components/ui.module.css';
@@ -75,15 +76,17 @@ export function Post({ slug }: { readonly slug: string }) {
 
   return (
     <article>
-      <div className={estilos.capa}>
-        <FotoDoConteudo
-          id={post.capa}
-          alt={`Imagem de capa do post “${post.titulo}”`}
-          preencher
-          priority
-          sizes="100vw"
-        />
-      </div>
+      <ViewTransition name={`capa-post-${post.slug}`} share="capa" default="none">
+        <div className={estilos.capa}>
+          <FotoDoConteudo
+            id={post.capa}
+            alt={`Imagem de capa do post “${post.titulo}”`}
+            preencher
+            priority
+            sizes="100vw"
+          />
+        </div>
+      </ViewTransition>
 
       <div className={estilos.corpo}>
         <Link href="/blog" className={estilos.voltar}>
