@@ -108,9 +108,10 @@ test('a ordem da lista é a ordem do portfólio', async ({ page }) => {
   await page.getByRole('button', { name: 'Subir Júlia & Vitor' }).click();
   await expect(status(page, 'Júlia & Vitor subiu.')).toBeVisible();
   await page.goto('/portfolio');
-  const cartoes = await page.getByRole('link', { name: /Ver as/ }).allTextContents();
-  expect(cartoes).toHaveLength(3);
-  expect(cartoes[0]).toContain('Marina & Téo');
-  expect(cartoes[1]).toContain('Júlia & Vitor');
-  expect(cartoes[2]).toContain('Bia & Caio');
+  // toHaveText com lista espera o conteúdo salvo substituir a semente (não lê cedo demais).
+  await expect(page.getByRole('link', { name: /Ver as/ })).toHaveText([
+    /Marina & Téo/,
+    /Júlia & Vitor/,
+    /Bia & Caio/,
+  ]);
 });

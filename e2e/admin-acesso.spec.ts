@@ -46,10 +46,9 @@ test('cada seção tem endereço próprio e sobrevive ao F5', async ({ page }) =
 
 test('a navegação das seções nunca quebra em duas linhas', async ({ page }) => {
   await entrarNoPainel(page);
-  const topos = await page
-    .getByRole('navigation', { name: 'Seções do painel' })
-    .getByRole('link')
-    .evaluateAll((links) => links.map((l) => (l as HTMLElement).offsetTop));
+  const links = page.getByRole('navigation', { name: 'Seções do painel' }).getByRole('link');
+  await expect(links).toHaveCount(7);
+  const topos = await links.evaluateAll((links) => links.map((l) => (l as HTMLElement).offsetTop));
   expect(topos).toHaveLength(7);
   const largura = page.viewportSize()?.width ?? 0;
   if (largura < 880) {
