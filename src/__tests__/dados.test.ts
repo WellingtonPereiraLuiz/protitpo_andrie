@@ -3,6 +3,13 @@ import { join, relative, sep } from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { criarAutenticacaoDemo } from '@/dados/local/autenticacao-demo';
 import { CHAVE_DO_CONTEUDO, criarConteudoLocal } from '@/dados/local/conteudo-local';
+import {
+  adicionarAlbum,
+  ALBUM_EM_BRANCO,
+  excluirAlbum,
+  mover,
+  referenciasDoAlbum,
+} from '@/dados/operacoes';
 import { ErroDeValidacao } from '@/dados/repositorios';
 import { validarConteudo, type ConteudoDoSite } from '@/dados/schema';
 import { copiaDaSemente, SEMENTE } from '@/dados/semente';
@@ -206,6 +213,58 @@ describe('autenticação de demonstração', () => {
     await auth.entrar('admin', 'admin');
     await auth.sair();
     expect(auth.sessaoAtiva()).toBe(false);
+  });
+});
+
+describe('operações sobre o documento', () => {
+  it('mover troca a posição e ignora destino fora da lista', () => {
+    expect(mover(['a', 'b', 'c'], 0, 2)).toEqual(['b', 'c', 'a']);
+    expect(mover(['a', 'b', 'c'], 2, 1)).toEqual(['a', 'c', 'b']);
+    expect(mover(['a', 'b'], 0, -1)).toEqual(['a', 'b']);
+  });
+
+  it('excluir um álbum leva junto o destaque e o link de post que apontavam para ele', () => {
+    expect(referenciasDoAlbum(SEMENTE, 'marina-teo')).toEqual({
+      destaques: 1,
+      posts: ['Casamento no sítio da família: a luz das cinco da tarde'],
+    });
+    const c = excluirAlbum(SEMENTE, 'marina-teo');
+    expect(c.albuns.map((a) => a.slug)).not.toContain('marina-teo');
+    expect(c.destaques.map((d) => d.slug)).toEqual(['luana-rafa', 'bia-caio']);
+    expect(primeiro(c.posts).links).toEqual([
+      { tipo: 'inativo', rotulo: 'Fornecedores do dia (exemplo fictício)' },
+    ]);
+    expect(validarConteudo(c).ok).toBe(true);
+    // A semente não foi tocada.
+    expect(SEMENTE.albuns).toHaveLength(6);
+  });
+
+  it('adicionar álbum gera endereço único a partir do nome', () => {
+    const dados = {
+      ...ALBUM_EM_BRANCO,
+      nome: 'Marina & Téo',
+      resumo: 'Outro',
+      texto: ['Outro texto.'],
+      capa: 'p1011',
+    };
+    const { conteudo, slug } = adicionarAlbum(SEMENTE, dados);
+    expect(slug).toBe('marina-teo-2');
+    expect(conteudo.albuns.at(-1)).toMatchObject({ slug: 'marina-teo-2', nome: 'Marina & Téo' });
+    expect(validarConteudo(conteudo).ok).toBe(true);
+  });
+
+  it('álbum em branco não passa no schema: pede nome, resumo, parágrafo e capa', () => {
+    const { conteudo } = adicionarAlbum(SEMENTE, ALBUM_EM_BRANCO);
+    const r = validarConteudo(conteudo);
+    expect(r.ok ? [] : r.erros.map((e) => e.caminho)).toEqual([
+      'albuns.6.nome',
+      'albuns.6.resumo',
+      'albuns.6.texto.0',
+      'albuns.6.capa',
+    ]);
+    expect(r.ok ? undefined : r.erros.find((e) => e.caminho === 'albuns.6.capa')?.mensagem).toBe(
+      'Escolha uma foto.',
+    );
   });
 });
 

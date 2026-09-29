@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { ConteudoFixo } from '@/dados/conteudo-do-site';
 import { ErroDeValidacao, type Servicos } from '@/dados/repositorios';
 import type { ConteudoDoSite, ErroDeCampo } from '@/dados/schema';
 import { SEMENTE } from '@/dados/semente';
@@ -101,7 +102,11 @@ export function PainelProvider({ children }: { children: React.ReactNode }) {
     [estado, servicos, geracao, salvar, restaurarTudo],
   );
 
-  return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;
+  return (
+    <Contexto.Provider value={valor}>
+      <ConteudoFixo conteudo={estado.conteudo}>{children}</ConteudoFixo>
+    </Contexto.Provider>
+  );
 }
 
 export function usePainel(): Painel {

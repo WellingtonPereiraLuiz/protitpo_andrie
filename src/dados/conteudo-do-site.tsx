@@ -52,6 +52,17 @@ export function ConteudoProvider({ children }: { children: React.ReactNode }) {
   return <Contexto.Provider value={estado}>{children}</Contexto.Provider>;
 }
 
+/** Fornece um conteúdo já carregado (o painel usa o dele, que inclui as fotos enviadas). */
+export function ConteudoFixo({
+  conteudo,
+  children,
+}: {
+  conteudo: ConteudoDoSite;
+  children: React.ReactNode;
+}) {
+  return <Contexto.Provider value={{ conteudo, carregado: true }}>{children}</Contexto.Provider>;
+}
+
 export function useConteudo(): EstadoDoConteudo {
   return useContext(Contexto);
 }

@@ -229,7 +229,8 @@ export const conteudoSchema = z
 
     // Toda foto citada tem que existir: na biblioteca ou entre as enviadas.
     for (const [caminho, foto] of fotosCitadas(c)) {
-      if (!(foto in MEDIA) && !(foto in c.fotosEnviadas)) {
+      // Foto vazia já tem a mensagem própria ("Escolha uma foto.").
+      if (foto !== '' && !(foto in MEDIA) && !(foto in c.fotosEnviadas)) {
         ctx.addIssue({ code: 'custom', path: caminho, message: `Foto inexistente: ${foto}.` });
       }
     }
